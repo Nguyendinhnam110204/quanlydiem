@@ -32,7 +32,7 @@
                 <div class="toggle-panel toggle-right">
                     <h1>Chào mừng Bạn!</h1>
                     <p>
-                       Đại học UTT là một trong những cơ sở giáo dục hàng đầu tại khu vực này,
+                       Đại học Công nghê Giao thông vận tải là một trong những cơ sở giáo dục hàng đầu tại khu vực này,
                        nổi bật với sự cam kết mang đến chất lượng giáo dục cao và môi trường
                        học tập thân thiện.
                     </p>
