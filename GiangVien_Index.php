@@ -65,7 +65,12 @@
                 <input type="text" placeholder="Tìm kiếm...">
             </div>
             
-            <img src="./Img/profile.jpg" alt="">
+            <div class="user-avatar" id="avatar" onclick="toggleDropdown()">
+                <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="#" onclick="logout()">Đăng xuất</a>
+                </div>
+            </div>
         </div>
 
         <div class="dash-content">
@@ -73,6 +78,6 @@
         </div>
     </section>
 
-    <script src="./JS/Admin_Script.js"></script>
+    <script src="./JS/Admin_Script.js?v = <?php echo time(); ?>"></script>
 </body>
 </html>
