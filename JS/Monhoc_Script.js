@@ -40,7 +40,7 @@ function logout() {
     // Thực hiện các thao tác đăng xuất tại đây, ví dụ xóa token đăng nhập, điều hướng trang, v.v.
     alert("Bạn đã đăng xuất thành công!");
     // Ví dụ điều hướng trang về trang chủ
-    window.location.href = "./Login/DangNhap_Index.php";
+    window.location.href = "../Login/DangNhap_Index.php";
 }
 
 // Đóng dropdown nếu người dùng click bên ngoài nó

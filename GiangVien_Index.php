@@ -26,33 +26,9 @@
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="./NguoiDung/index_NguoiDung.php">
-                    <i class="uil uil-user"></i>
-                    <span class="link-name">Quản lý tài khoản</span>
-                </a></li>
                 <li><a href="#">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-book-reader"></i>
-                    <span class="link-name">Thông tin sinh viên</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-file-info-alt"></i>
-                    <span class="link-name">Thông tin giáo viên</span>
-                </a></li>
-                <li><a href="./MonHoc/index_MonHoc.php">
-                    <i class="uil uil-subject"></i>
-                    <span class="link-name">Môn học</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-atom"></i>
-                    <span class="link-name">Khoa ngành</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-bell-school"></i>
-                    <span class="link-name">Học kỳ</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-analytics"></i>
@@ -89,15 +65,7 @@
                 <input type="text" placeholder="Tìm kiếm...">
             </div>
             
-            <div class="user-avatar" id="avatar" onclick="toggleDropdown()">
-                <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <a href="#" onclick="logout()">Đăng xuất</a>
-                </div>
-            </div>
-
-
-            
+            <img src="./Img/profile.jpg" alt="">
         </div>
 
         <div class="dash-content">
@@ -105,6 +73,6 @@
         </div>
     </section>
 
-    <script src="./JS/Admin_Script.js?v = <?php echo time(); ?>"></script>
+    <script src="./JS/Admin_Script.js"></script>
 </body>
 </html>
