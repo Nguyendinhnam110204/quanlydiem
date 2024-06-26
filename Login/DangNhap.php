@@ -32,7 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         alert('Đăng nhập thành công với vai trò giảng viên.');
                         window.location.href = '../GiangVien_Index.php'; // Đổi thành trang chính của giảng viên
                     </script>";
-            } else {
+            }if ($vaiTro == 'sinh_vien'){
+                echo "<script>
+                        alert('Đăng nhập thành công với vai trò sinh viên.');
+                        window.location.href = '../SinhVien_Index.php'; // Đổi thành trang chính của sinh viên
+                    </script>";
+            }else {
                 echo "<script>
                         alert('Đăng nhập thành công.');
                         window.location.href = '../Admin_Index.php'; // Đổi thành trang chính của quản trị viên
