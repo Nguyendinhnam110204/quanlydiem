@@ -360,40 +360,6 @@ nav.close ~ .dashboard .top{
     color: var(--text-color);
 }
 
-.user-avatar {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.user-avatar img {
-    width: 50px; /* Điều chỉnh kích thước avatar theo nhu cầu */
-    height: 50px; /* Điều chỉnh kích thước avatar theo nhu cầu */
-    border-radius: 50%;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 60px; /* Điều chỉnh khoảng cách từ avatar đến menu */
-    right: 0;
-    background-color: white;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-menu a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-menu a:hover {
-    background-color: #ddd;
-}
-
-
 @media (max-width: 1000px) {
     nav{
         width: 73px;

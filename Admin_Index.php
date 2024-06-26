@@ -61,7 +61,7 @@
             </ul>
             
             <ul class="logout-mode">
-                <li><a href="#">
+                <li><a href="./Login/DangXuat.php">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
@@ -88,13 +88,8 @@
                 <i class="uil uil-search"></i>
                 <input type="text" placeholder="Tìm kiếm...">
             </div>
-            
-            <div class="user-avatar" id="avatar" onclick="toggleDropdown()">
-                <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
-                <div class="dropdown-menu" id="dropdown-menu">
-                    <a href="#" onclick="logout()">Đăng xuất</a>
-                </div>
-            </div>
+
+            <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
 
 
             
