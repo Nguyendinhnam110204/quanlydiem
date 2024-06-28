@@ -8,8 +8,14 @@
     //cau lenh sql
     $delete_sql = "DELETE FROM monhoc WHERE idMonHoc = $idMonHoc";
 
-    mysqli_query($conn, $delete_sql);
-
-    //tro ve trang list
-    header("Location: index_MonHoc.php");
+    try {
+        if (!mysqli_query($conn,$delete_sql)) {
+            throw new Exception(mysqli_error($conn));
+        }
+        header("location:index_MonHoc.php");
+    } catch (Exception $e) {
+        // Nếu có lỗi, hiển thị thông báo và quay về trang list
+        echo '<script>alert("Không thể xóa do khóa ngoại"); window.location.href = "index_MonHoc.php";</script>';
+        exit();
+    }
 ?>
