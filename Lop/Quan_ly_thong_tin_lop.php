@@ -20,7 +20,6 @@ if(isset($_POST['btntk'])){
      WHERE malop like '%$mmalop%'";
     $result = mysqli_query($conn,$sqltk);
   }
-  mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,14 +157,24 @@ if(isset($_POST['btntk'])){
                     <td><?php echo $r['TenLop']; ?></td>
                     <td><?php echo $r['TenKhoa']; ?></td>
                     <td><?php echo $r['TenHeDT']; ?></td>
-                    <td></td>
+                    <?php
+                    require_once '../connect.php';
+                    $idLop = $r['idLop'];
+                    $soluong = mysqli_query($conn, "SELECT COUNT(*) AS so_sv FROM sinhvien WHERE idLop = '$idLop'");
+                    while ($row = mysqli_fetch_assoc($soluong)) {
+                        ?>
+                        <td style="text-align:center;padding-left: 0px;"><?php echo $row['so_sv']; ?></td>
+                    <?php 
+                    }
+                    ?>
                     <td><?php echo $r['Hoten']; ?></td>
                     <td>
                         <a href="Sua_thong_tin_lop.php?idLop=<?php echo $r['idLop'];?>" class="btn btn-success">Sửa</a>
                         <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_lop.php?idLop=<?php echo $r['idLop'];?>" class="btn btn-danger">Xóa</a>
                     </td>
                 </tr>
-            <?php } ?>
+            <?php } 
+            mysqli_close($conn);?>
             <tr>
                 <td colspan="6">
                     <a href="Them_thong_tin_lop.php" class="btn btn-primary">Thêm lớp</a>
