@@ -113,6 +113,7 @@
                 <label for="">Họ Tên</label>
                 <input type="text" name="HoTen" id="HoTen" class="form-control">
             </div>
+            <!-- thiếu phần mã lớp  -->
             <div class="form-group">
                 <label for="">Ngày Sinh</label>
                 <input type="date" id="NgaySinh" name="NgaySinh" class="form-control">

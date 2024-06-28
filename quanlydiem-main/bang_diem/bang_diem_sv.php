@@ -118,23 +118,23 @@ mysqli_close($conn);
                     <i class="uil uil-subject"></i>
                     <span class="link-name">Môn học</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Lop/Quan_ly_thong_tin_lop.php">
                     <i class="uil uil-book-open"></i>
                     <span class="link-name">Lớp</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Khoa/Quan_ly_thong_tin_khoa.php">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hedaotao/Quan_ly_he_dao_tao.php">
                     <i class="uil uil-books"></i>
                     <span class="link-name">Hệ đào tạo</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hocky/Quan_ly_hocky.php">
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <li><a href="./.baocaovathongke/baocao.php">
+                <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
@@ -159,7 +159,6 @@ mysqli_close($conn);
             </ul>
         </div>
     </nav>
-
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
@@ -286,7 +285,7 @@ mysqli_close($conn);
                         </div>
                         <div class="form-group">
                             <label for="update_MaSinhVien">Mã sinh viên</label>
-                            <input type="text" class="form-control" id="update_MaSinhVien" name="MaSinhVien" required>
+                            <input type="text" class="form-control" id="update_MaSinhVien" name="MaSinhVien" readonly>
                         </div>
                         <div class="form-group">
                             <label for="update_email_HoTen">Tên Sinh Viên</label>

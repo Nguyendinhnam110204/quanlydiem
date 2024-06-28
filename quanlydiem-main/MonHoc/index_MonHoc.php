@@ -57,19 +57,19 @@
                     <i class="uil uil-subject"></i>
                     <span class="link-name">Môn học</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Lop/Quan_ly_thong_tin_lop.php">
                     <i class="uil uil-book-open"></i>
                     <span class="link-name">Lớp</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Khoa/Quan_ly_thong_tin_khoa.php">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hedaotao/Quan_ly_he_dao_tao.php">
                     <i class="uil uil-books"></i>
                     <span class="link-name">Hệ đào tạo</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hocky/Quan_ly_hocky.php">
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
@@ -198,7 +198,7 @@
                     </div>
                     <!-- Modal Thêm -->
                     <div class="modal-body">
-                        <form action="./MonHoc/insert_MonHoc.php" method="post">
+                        <form action="insert_MonHoc.php" method="post">
                             <div class="form-group">
                                 <label for="MaMonHoc">Mã môn học</label>
                                 <input type="text" class="form-control" id="MaMonHoc" name="MaMonHoc" required>
