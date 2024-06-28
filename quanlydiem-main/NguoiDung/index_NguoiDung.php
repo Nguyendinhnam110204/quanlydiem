@@ -41,7 +41,7 @@
                     <i class="uil uil-user"></i>
                     <span class="link-name">Quản lý tài khoản</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../bang_diem/bang_diem_sv.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
@@ -102,11 +102,6 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Tìm kiếm...">
-            </div>
             
             <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
         </div>

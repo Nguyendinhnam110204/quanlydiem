@@ -30,7 +30,7 @@
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="">
+                <li><a href="./bang_diem/bang_diem_sv.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
@@ -47,14 +47,22 @@
                     <span class="link-name">Môn học</span>
                 </a></li>
                 <li><a href="#">
+                    <i class="uil uil-book-open"></i>
+                    <span class="link-name">Lớp</span>
+                </a></li>
+                <li><a href="#">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <li><a href="./baocaovathongke/baocao">
+                <li><a href="#">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
@@ -83,11 +91,6 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Tìm kiếm...">
-            </div>
             
             <img src="./Img/profile.jpg" alt="">
         </div>

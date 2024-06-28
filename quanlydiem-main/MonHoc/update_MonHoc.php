@@ -6,13 +6,12 @@
         $TenMonHoc = $_POST['TenMonHoc'];
         $SoTinChi = $_POST['SoTinChi'];
         $MoTa = $_POST['MoTa'];
-        $HocKy = $_POST['HocKy'];
 
         $sql_check = "SELECT * FROM monhoc WHERE MaMonHoc = '$maMonHoc'";
         $result = $conn->query($sql_check);
 
         if ($result->num_rows == 0) {
-                $update_sql = "UPDATE monhoc SET MaMonHoc = '$MaMonHoc', TenMonHoc = '$TenMonHoc', SoTinChi = '$SoTinChi', MoTa = '$MoTa', idHocKy = '$HocKy' WHERE idMonHoc = '$idMonHoc'";
+                $update_sql = "UPDATE monhoc SET MaMonHoc = '$MaMonHoc', TenMonHoc = '$TenMonHoc', SoTinChi = '$SoTinChi', MoTa = '$MoTa' WHERE idMonHoc = '$idMonHoc'";
 
                 mysqli_query($conn, $update_sql);
         

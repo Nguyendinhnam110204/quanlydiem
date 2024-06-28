@@ -15,15 +15,8 @@
         <div class="form-container sign-in">
             <form action="DangNhap.php" method="post">
                 <h1>Đăng nhập</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                <span>hoặc sử dụng mã người dùng và mật khẩu</span>
-                <input type="text" placeholder="Mã người dùng" name="TenDangNhap" required>
-                <input type="password" placeholder="Mật khẩu" name="MatKhau" required>
+                <input type="text" placeholder="Mã người dùng" style="margin-top: 10px;" name="TenDangNhap" required>
+                <input type="password" placeholder="Mật khẩu"  name="MatKhau" required>
                 <button>Đăng nhập</button>
             </form>
         </div>
