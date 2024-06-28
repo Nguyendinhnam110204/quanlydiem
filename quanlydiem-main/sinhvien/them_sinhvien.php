@@ -8,7 +8,7 @@ $email=$_POST['Email'];
 $sdt=$_POST['DienThoai'];
 
 //ket noi sql
-require_once '../connect.php';
+require_once '../folderconnect/connect.php';
 // Kiểm tra mã sinh viên có trùng hay không
 $sql_check = "SELECT * FROM sinhvien WHERE MaSinhVien = '$ma'";
 $result_check = $conn->query($sql_check);

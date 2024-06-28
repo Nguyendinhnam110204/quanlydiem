@@ -3,7 +3,7 @@
 $ma = $_GET['sid'];
 
 // Kết nối tới CSDL
-require_once '../connect.php';
+require_once '../folderconnect/connect.php';
 
 // Truy vấn để lấy thông tin sinh viên
 $edit_sql = "SELECT * FROM sinhvien WHERE idSinhVien = '$ma'";
@@ -157,6 +157,6 @@ if (!$row) {
         </div>
     </section>
 
-    <script src="./JS/Admin_Script.js"></script>
+    <script src="../JS/Admin_Script.js"></script>
 </body>
 </html>

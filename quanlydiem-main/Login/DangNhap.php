@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }if ($vaiTro == 'sinh_vien'){
                 echo "<script>
                         alert('Đăng nhập thành công với vai trò sinh viên.');
-                        window.location.href = '../SinhVien_Index.php'; // Đổi thành trang chính của sinh viên
+                        window.location.href = '../xemdiem.php'; // Đổi thành trang chính của sinh viên
                     </script>";
             }else {
                 echo "<script>

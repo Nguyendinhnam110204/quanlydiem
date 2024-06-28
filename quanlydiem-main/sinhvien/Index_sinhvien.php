@@ -108,7 +108,7 @@
             <!-- Chứa chi tiết các chức năng ở đây -->
             <?php
             //kenoi
-            require_once '../connect.php';
+            require_once '../folderconnect/connect.php';
             //cau lenh
             $lietke_sql ="SELECT * FROM sinhvien ORDER BY idSinhVien,MaSinhVien,HoTen,NgaySinh,DiaChi,Email,DienThoai,idlop";
             //thuc thi cau lenh
@@ -172,7 +172,7 @@
         </div>
     </section>
 
-    <script src="./JS/Admin_Script.js"></script>
+    <script src="../JS/Admin_Script.js"></script>
     
 </body>
 </html>

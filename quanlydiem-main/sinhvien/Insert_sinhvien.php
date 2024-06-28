@@ -135,6 +135,6 @@
         </div>
     </section>
 
-    <script src="./JS/Admin_Script.js"></script>
+    <script src="../JS/Admin_Script.js"></script>
 </body>
 </html>

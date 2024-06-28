@@ -26,6 +26,7 @@
 
 <div class="container mt-4">
     <?php
+    session_start();
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -39,8 +40,8 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    if (isset($_GET['idSinhVien'])) {
-        $studentId = $_GET['idSinhVien'];
+    if (isset($_SESSION['idNguoiDung'])) {
+        $studentId = $_SESSION['idNguoiDung'];
 
     $studentQuery = "SELECT sv.MaSinhVien, sv.HoTen, sv.NgaySinh, sv.DiaChi, sv.Email, sv.DienThoai, l.TenLop, k.TenKhoa, hdt.TenHeDT
                      FROM SinhVien sv

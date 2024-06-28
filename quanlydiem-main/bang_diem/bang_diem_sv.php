@@ -2,9 +2,6 @@
 require_once '../folderconnect/connect.php';
 session_start();
 
-require_once '../folderconnect/connect.php';
-session_start();
-
 // if (!isset($_SESSION['VaiTro'])) {
 //     // Chưa đăng nhập
 //     echo "<script>
@@ -136,7 +133,7 @@ mysqli_close($conn);
             </ul>
             
             <ul class="logout-mode">
-                <li><a href="#">
+                <li><a href="../Login/DangNhap_Index.php">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>

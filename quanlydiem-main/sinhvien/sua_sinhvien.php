@@ -10,7 +10,7 @@ $email=$_POST['Email'];
 $sdt=$_POST['DienThoai'];
 
 //kết nối csdl
-require_once '../connect.php';
+require_once '../folderconnect/connect.php';
 
 //viet lenh sql de them du lieu
 $updatesql = "UPDATE sinhvien SET MaSinhVien='$ma',idlop='$lop',HoTen='$ten', NgaySinh='$ns', DiaChi='$dc', Email='$email', DienThoai='$sdt' WHERE idSinhVien='$id'";

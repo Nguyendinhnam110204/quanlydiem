@@ -3,7 +3,7 @@
 $sid =$_GET['sid'];
 // echo $id;
 //ket noi
-require_once '../connect.php';
+require_once '../folderconnect/connect.php';
 //cau lenh sql
 $xoa_sql = "DELETE FROM sinhvien WHERE idSinhVien='$sid'";
 
