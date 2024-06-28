@@ -141,6 +141,7 @@
                         // Câu lệnh SQL có điều kiện tìm kiếm
                         if ($searchTerm) {
                             $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa
+                                        FROM monhoc
                                         WHERE monhoc.MaMonHoc LIKE '%$searchTerm%' 
                                         OR monhoc.TenMonHoc LIKE '%$searchTerm%'
                                         ORDER BY MaMonHoc, TenMonHoc";

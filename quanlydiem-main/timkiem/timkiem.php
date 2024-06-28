@@ -140,12 +140,7 @@ mysqli_close($conn);
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-            <form action="" method="post">
-              <div class="search-box">
-              <button type="submit" name="btnTimkiem"><i class="uil uil-search"></i></button>
-                <input type="text" placeholder="Tìm kiếm...">
-            </div>
-            </form>
+            
             <img src="../Img/profile.jpg" alt="">
         </div>
 
