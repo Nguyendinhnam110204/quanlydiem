@@ -141,6 +141,7 @@
                         // Câu lệnh SQL có điều kiện tìm kiếm
                         if ($searchTerm) {
                             $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa
+                                        FROM monhoc
                                         WHERE monhoc.MaMonHoc LIKE '%$searchTerm%' 
                                         OR monhoc.TenMonHoc LIKE '%$searchTerm%'
                                         ORDER BY MaMonHoc, TenMonHoc";
@@ -198,7 +199,7 @@
                     </div>
                     <!-- Modal Thêm -->
                     <div class="modal-body">
-                        <form action="./MonHoc/insert_MonHoc.php" method="post">
+                        <form action="insert_MonHoc.php" method="post">
                             <div class="form-group">
                                 <label for="MaMonHoc">Mã môn học</label>
                                 <input type="text" class="form-control" id="MaMonHoc" name="MaMonHoc" required>
