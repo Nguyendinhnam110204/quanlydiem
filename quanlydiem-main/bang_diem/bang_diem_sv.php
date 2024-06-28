@@ -2,9 +2,6 @@
 require_once '../folderconnect/connect.php';
 session_start();
 
-require_once '../folderconnect/connect.php';
-session_start();
-
 // if (!isset($_SESSION['VaiTro'])) {
 //     // Chưa đăng nhập
 //     echo "<script>
@@ -14,7 +11,7 @@ session_start();
 //     exit;
 // }
 
-$vaiTro = $_SESSION['VaiTro'];
+// $vaiTro = $_SESSION['VaiTro'];
 
 if (isset($_SESSION['idNguoiDung'])) {
     $idNguoiDung = $_SESSION['idNguoiDung'];
@@ -122,8 +119,16 @@ mysqli_close($conn);
                     <span class="link-name">Môn học</span>
                 </a></li>
                 <li><a href="#">
+                    <i class="uil uil-book-open"></i>
+                    <span class="link-name">Lớp</span>
+                </a></li>
+                <li><a href="#">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-bell-school"></i>

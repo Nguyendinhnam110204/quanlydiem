@@ -102,11 +102,6 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Tìm kiếm...">
-            </div>
             
             <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
         </div>
@@ -117,7 +112,7 @@
             
             <div class="input-group mb-3" style="margin-top: 50px; width: 400px;">
                 <form action="index_MonHoc.php" method="get" style="display: flex; width: 100%;">
-                    <input type="search" class="form-control" placeholder="Search" name="searchTerm">
+                    <input type="search" class="form-control" placeholder="Tìm kiếm..." name="searchTerm">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit" style="width: 100px;">Tìm Kiếm</button>
                     </div>
@@ -146,13 +141,12 @@
 
                         // Câu lệnh SQL có điều kiện tìm kiếm
                         if ($searchTerm) {
-                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa, hocky.TenHocKy FROM monhoc 
-                                        JOIN hocky ON monhoc.idHocKy = hocky.idHocKy 
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa
                                         WHERE monhoc.MaMonHoc LIKE '%$searchTerm%' 
                                         OR monhoc.TenMonHoc LIKE '%$searchTerm%'
                                         ORDER BY MaMonHoc, TenMonHoc";
                         } else {
-                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa, hocky.TenHocKy FROM monhoc JOIN hocky ON monhoc.idHocKy = hocky.idHocKy ORDER BY MaMonHoc, TenMonHoc";
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa FROM monhoc ORDER BY MaMonHoc, TenMonHoc";
                         }
 
                         //thuc thi cau lenh
@@ -166,7 +160,6 @@
                                 <td><?php echo $row["TenMonHoc"] ?></td>
                                 <td><?php echo $row["SoTinChi"] ?></td>
                                 <td><?php echo $row["MoTa"] ?></td>
-                                <td><?php echo $row["TenHocKy"] ?></td>
                                 <td>
                                     <button
                                         type="button" 
@@ -175,8 +168,7 @@
                                         data-MaMonHoc="<?php echo $row["MaMonHoc"]; ?>" 
                                         data-TenMonHoc="<?php echo $row["TenMonHoc"]; ?>" 
                                         data-SoTinChi="<?php echo $row["SoTinChi"]; ?>" 
-                                        data-MoTa="<?php echo $row["MoTa"]; ?>" 
-                                        data-HocKy="<?php echo $row["TenHocKy"]; ?>"  
+                                        data-MoTa="<?php echo $row["MoTa"]; ?>"   
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
@@ -224,19 +216,6 @@
                                 <label for="MoTa">Mô tả</label>
                                 <input type="text" class="form-control" id="MoTa" name="MoTa" required>
                             </div>
-                            <div class="form-group">
-                                <label for="HocKy">Học kỳ</label>
-                                <select class="form-control" id="HocKy" name="HocKy">
-                                    <?php
-                                        $author_sql = "SELECT idHocKy, TenHocKy FROM hocky";
-                                        $author_result = mysqli_query($conn, $author_sql);
-
-                                        while ($author_row = mysqli_fetch_assoc($author_result)) {
-                                            echo '<option value="' . $author_row["idHocKy"] . '">' . $author_row["TenHocKy"] . '</option>';
-                                        }
-                                    ?>
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-success">Thêm</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-left: 275px;">Đóng</button>
                         </form>
@@ -263,7 +242,6 @@
                                 const tenMonHoc = this.getAttribute('data-TenMonHoc');
                                 const soTinChi = this.getAttribute('data-SoTinChi');
                                 const moTa = this.getAttribute('data-MoTa');
-                                const hocKy = this.getAttribute('data-HocKy');
 
                                 // Điền giá trị vào các trường trong modal
                                 document.getElementById('update_idMonHoc').value = idMonHoc;
@@ -271,7 +249,6 @@
                                 document.getElementById('update_TenMonHoc').value = tenMonHoc;
                                 document.getElementById('update_SoTinChi').value = soTinChi;
                                 document.getElementById('update_MoTa').value = moTa;
-                                document.getElementById('update_HocKy').value = hocKy;
                             });
                         });
                     });
@@ -288,7 +265,7 @@
                             <input type="hidden" name="idMonHoc" id="update_idMonHoc">
                             <div class="form-group">
                                 <label for="update_MaMonHoc">Mã môn học</label>
-                                <input type="text" class="form-control" id="update_MaMonHoc" name="MaMonHoc" required>
+                                <input type="text" class="form-control" id="update_MaMonHoc" name="MaMonHoc" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="update_TenMonHoc">Tên môn học</label>
@@ -301,20 +278,6 @@
                             <div class="form-group">
                                 <label for="update_MoTa">Mô tả</label>
                                 <input type="text" class="form-control" id="update_MoTa" name="MoTa" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="update_HocKy">Học kỳ</label>
-                                <select class="form-control" id="update_HocKy" name="HocKy" >
-                                    <?php
-                                        // Lấy danh sách học kỳ
-                                        $author_sql = "SELECT idHocKy, TenHocKy FROM hocky";
-                                        $author_result = mysqli_query($conn, $author_sql);
-
-                                        while ($author_row = mysqli_fetch_assoc($author_result)) {
-                                            echo '<option value="' . $author_row["idHocKy"] . '">' . $author_row["TenHocKy"] . '</option>';
-                                        }
-                                    ?>
-                                </select>
                             </div>
                             <button type="submit" class="btn btn-success">Cập nhật</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-left: 275px;">Đóng</button>

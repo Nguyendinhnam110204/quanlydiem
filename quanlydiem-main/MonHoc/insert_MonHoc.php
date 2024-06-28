@@ -3,7 +3,6 @@
         $tenMonHoc = $_POST['TenMonHoc'];
         $soTinChi = $_POST['SoTinChi'];
         $moTa = $_POST['MoTa'];
-        $hocKy = $_POST['HocKy'];
 
         //ket noi csdl
         require_once '../folderconnect/connect.php';
@@ -12,7 +11,7 @@
         $result = $conn->query($sql_check);
 
         if ($result->num_rows == 0) {
-            $themsql = "INSERT INTO monhoc (MaMonHoc, TenMonHoc, SoTinChi, MoTa, idHocKy) VALUES ('$maMonHoc', '$tenMonHoc', '$soTinChi', '$moTa', '$hocKy')";
+            $themsql = "INSERT INTO monhoc (MaMonHoc, TenMonHoc, SoTinChi, MoTa) VALUES ('$maMonHoc', '$tenMonHoc', '$soTinChi', '$moTa')";
             // echo $themsql; exit;
 
             //thuc thi cau lenh them

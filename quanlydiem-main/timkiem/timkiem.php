@@ -97,8 +97,16 @@ mysqli_close($conn);
                     <span class="link-name">Môn học</span>
                 </a></li>
                 <li><a href="#">
+                    <i class="uil uil-book-open"></i>
+                    <span class="link-name">Lớp</span>
+                </a></li>
+                <li><a href="#">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-bell-school"></i>
@@ -107,7 +115,6 @@ mysqli_close($conn);
                 <li><a href="#">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
-                </a></li>
             </ul>
             
             <ul class="logout-mode">
