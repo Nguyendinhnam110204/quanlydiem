@@ -37,30 +37,38 @@
         </div>
 
         <div class="menu-items">
-            <ul class="nav-links">
-                <li><a href="#">
+        <ul class="nav-links">
+                <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
-                <li><a href="Index_sinhvien.php">
+                <li><a href="#">
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
                 </a></li>
-                <li><a href="Index_giangvien.php">
+                <li><a href="../giangvien/Index_giangvien.php">
                     <i class="uil uil-file-info-alt"></i>
-                    <span class="link-name">Thông tin giáo viên</span>
+                    <span class="link-name">Thông tin giảng viên</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../MonHoc/index_MonHoc.php">
                     <i class="uil uil-subject"></i>
                     <span class="link-name">Môn học</span>
                 </a></li>
                 <li><a href="#">
+                    <i class="uil uil-book-open"></i>
+                    <span class="link-name">Lớp</span>
+                </a></li>
+                <li><a href="#">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-bell-school"></i>
@@ -73,7 +81,7 @@
             </ul>
             
             <ul class="logout-mode">
-                <li><a href="#">
+                <li><a href="../Login/DangNhap_Index.php">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>

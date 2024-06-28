@@ -98,23 +98,23 @@ mysqli_close($conn);
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="#">
+                <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="">
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../giangvien/Index_giangvien.php">
                     <i class="uil uil-file-info-alt"></i>
-                    <span class="link-name">Thông tin giáo viên</span>
+                    <span class="link-name">Thông tin giảng viên</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../MonHoc/index_MonHoc.php">
                     <i class="uil uil-subject"></i>
                     <span class="link-name">Môn học</span>
                 </a></li>
@@ -134,7 +134,7 @@ mysqli_close($conn);
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="./.baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>

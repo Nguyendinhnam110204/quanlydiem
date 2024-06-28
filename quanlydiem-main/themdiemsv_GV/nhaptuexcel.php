@@ -127,6 +127,6 @@ if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['na
 // // Đảm bảo không có output trước khi redirect
 // ob_end_flush();
 
-header('Location: danhsach_SV.php');
+header('Location: themdiem_SV.php');
 exit;
 ?>
