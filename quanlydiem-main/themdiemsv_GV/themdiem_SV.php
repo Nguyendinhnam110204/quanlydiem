@@ -1,11 +1,13 @@
 <?php
+session_start();
+$vaiTro = $_SESSION['VaiTro'];
 require_once '../folderconnect/connect.php';
 
 $sql_hocky ="SELECT * FROM hocky";
 $result = mysqli_query($conn,$sql_hocky);
 
-$sql_namhoc ="SELECT diem.NamHoc FROM diem";
-$result_namhoc  = mysqli_query($conn,$sql_namhoc);
+// $sql_namhoc ="SELECT diem.NamHoc FROM diem";
+// $result_namhoc  = mysqli_query($conn,$sql_namhoc);
 
 $sql_giangvien = "SELECT * FROM giangvien";
 $result_giangvien = mysqli_query($conn,$sql_giangvien);
@@ -81,18 +83,17 @@ mysqli_close($conn);
                 <img src="http://utt.edu.vn/home/images/stories/logo-utt-border.png" alt="">
             </div>
 
+
             <span class="logo_name" style="color: orange;">UTT SCHOOL</span>
         </div>
 
         <div class="menu-items">
         <ul class="nav-links">
+            <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
                 </a></li>
                 <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
@@ -122,10 +123,20 @@ mysqli_close($conn);
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
+                <li><a href="#">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Bảng điểm</span>
+                </a></li>
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">

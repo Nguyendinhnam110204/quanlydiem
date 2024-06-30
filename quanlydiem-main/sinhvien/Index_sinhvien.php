@@ -1,3 +1,7 @@
+<?php 
+session_start();
+$vaiTro = $_SESSION['VaiTro'];
+?>
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
 <html lang="en">
@@ -38,13 +42,11 @@
 
         <div class="menu-items">
         <ul class="nav-links">
+            <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
-                </a></li>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-book-reader"></i>
@@ -74,10 +76,20 @@
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Bảng điểm</span>
+                </a></li>
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">

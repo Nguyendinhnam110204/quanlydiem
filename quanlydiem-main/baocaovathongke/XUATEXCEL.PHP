@@ -17,16 +17,18 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
     $sheet->setCellValue('C'.$rowCount,'Tên Lớp');
     $sheet->setCellValue('D'.$rowCount,'Học Kỳ');
     $sheet->setCellValue('E'.$rowCount,'GPA');
+    $sheet->setCellValue('F'.$rowCount,'Loại Học Bổng');
     // định dạng cột tiêu đề
     $sheet->getColumnDimension('A')->setAutoSize(true);
     $sheet->getColumnDimension('B')->setAutoSize(true);
     $sheet->getColumnDimension('C')->setAutoSize(true);
     $sheet->getColumnDimension('D')->setAutoSize(true);
     $sheet->getColumnDimension('E')->setAutoSize(true);
+    $sheet->getColumnDimension('F')->setAutoSize(true);
     // gán màu nền
-    $sheet->getStyle('A1:E1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('00FF00');
+    $sheet->getStyle('A1:F1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('00FF00');
     // căn giữa tiêu đề
-    $sheet->getStyle('A1:E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A1:F1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
    
     $idKhoa = $_SESSION['idKhoa'];
     $idHocKy = $_SESSION['idHocKy'];
@@ -43,14 +45,24 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
     if (!$result_excel) {
         die('Query failed: ' . mysqli_error($conn));  
     }
-  
+    $loaiHocBong='';
     while($row = mysqli_fetch_array($result_excel)){
+      $gpa = $row['GPA'];
+      if($gpa >= 3.6 && $gpa <= 4.0){
+          $loaiHocBong = 'Xuất Sắc';
+      }elseif($gpa >= 3.2 && $gpa <= 3.59){
+          $loaiHocBong = 'Giỏi';
+      }
+      elseif($gpa >= 2.5 && $gpa <= 3.19){
+          $loaiHocBong = 'Khá';
+      }
       $rowCount++;
       $sheet->setCellValue('A'.$rowCount, $row['MaSinhVien']);
       $sheet->setCellValue('B'.$rowCount, $row['HoTen']);
       $sheet->setCellValue('C'.$rowCount, $row['TenLop']);
       $sheet->setCellValue('D'.$rowCount, $row['TenHocKy']);
       $sheet->setCellValue('E'.$rowCount, $row['GPA']);
+      $sheet->setCellValue('F'.$rowCount, $loaiHocBong);
       
     }
     
@@ -62,7 +74,7 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
             )
         )
     );
-    $sheet->getStyle('A1:'.'E'.($rowCount))->applyFromArray($styleAray);
+    $sheet->getStyle('A1:'.'F'.($rowCount))->applyFromArray($styleAray);
     $fileName = 'Danh_sach_sinh_vien_được_hoc_bong.xlsx';
     $objWriter = new PHPExcel_Writer_Excel2007($objExcel);
     $objWriter->save($fileName);

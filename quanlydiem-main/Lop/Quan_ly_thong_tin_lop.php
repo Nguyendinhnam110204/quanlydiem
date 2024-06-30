@@ -1,6 +1,7 @@
 <?php
 require_once '../folderconnect/connect.php';
-
+session_start();
+$vaiTro = $_SESSION['VaiTro'];
 // Truy vấn dữ liệu
 $hienthi_sql = "SELECT lop.idLop, lop.MaLop, lop.TenLop, khoa.TenKhoa, giangvien.Hoten, hedaotao.TenHeDT 
                 FROM lop
@@ -53,13 +54,11 @@ if(isset($_POST['btntk'])){
 
         <div class="menu-items">
         <ul class="nav-links">
+            <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
-                </a></li>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
                 </a></li>
                 <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
@@ -89,10 +88,20 @@ if(isset($_POST['btntk'])){
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Bảng điểm</span>
+                </a></li>
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">

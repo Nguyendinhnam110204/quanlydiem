@@ -16,14 +16,12 @@ $gpaSystem4 = [
 ];
 
 // Xử lý khi nhấn nút "Nhập điểm từ Excel"
-if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['namHoc']) && isset($_POST['giangVien']) && isset($_POST['monHoc']) && isset($_POST['soTinChi']) && isset($_POST['lop']) && isset($_FILES['fileUpload'])) {
+if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy'])  && isset($_POST['giangVien']) && isset($_POST['monHoc']) && isset($_POST['soTinChi']) && isset($_POST['lop']) && isset($_FILES['fileUpload'])) {
     $idHocKy = $_POST['hocKy'];
-    $namHoc = $_POST['namHoc'];
     $idGiangVien = $_POST['giangVien'];
     $idMonHoc = $_POST['monHoc'];
     $soTinChi = $_POST['soTinChi'];
     $lop = $_POST['lop'];
-
     $file = $_FILES['fileUpload']['tmp_name'];
 
     // Kiểm tra file có tồn tại và có thể đọc được không
@@ -85,7 +83,7 @@ if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['na
                     $danhGia = ($tongKetHocPhan < 4) ? 'Thi Lai' : 'DAT';
 
                     // Thực hiện câu lệnh INSERT
-                    $sql = "INSERT INTO diem (idSinhVien,idGiangVien, idMonHoc, idHocKy, NamHoc, DiemChuyenCan, DiemGiuaKy, DiemCuoiKy, TongKetHocPhan, DiemChu, DanhGia) VALUES ('$idSinhVien','$idGiangVien', '$idMonHoc', '$idHocKy', '$namHoc', '$diemChuyenCan', '$diemGiuaKy', '$diemCuoiKy', '$tongKetHocPhan', '$diemChu', '$danhGia')";
+                    $sql = "INSERT INTO diem (idSinhVien,idGiangVien, idMonHoc, idHocKy, DiemChuyenCan, DiemGiuaKy, DiemCuoiKy, TongKetHocPhan, DiemChu, DanhGia) VALUES ('$idSinhVien','$idGiangVien', '$idMonHoc', '$idHocKy', '$diemChuyenCan', '$diemGiuaKy', '$diemCuoiKy', '$tongKetHocPhan', '$diemChu', '$danhGia')";
                     $result = mysqli_query($conn, $sql);
 
                     // Kiểm tra và xử lý kết quả INSERT
@@ -94,7 +92,7 @@ if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['na
                         $lastInsertedId = mysqli_insert_id($conn);
 
                         // Cập nhật GPA vào bảng `gpa`
-                        $sqlGPA = "INSERT INTO gpa (GPA) VALUES ('$gpaH4')";
+                        $sqlGPA = "INSERT INTO gpa ( idSinhVien,idHocKy, GPA ) VALUES ('$idSinhVien','$idHocKy','$gpaH4')";
                         $resultGPA = mysqli_query($conn, $sqlGPA);
 
                         // Lấy id của GPA vừa cập nhật
