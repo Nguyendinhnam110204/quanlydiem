@@ -5,26 +5,12 @@
         $MaMonHoc = $_POST['MaMonHoc'];
         $TenMonHoc = $_POST['TenMonHoc'];
         $SoTinChi = $_POST['SoTinChi'];
+        $idHocKy = $_POST['idHocKy'];
         $MoTa = $_POST['MoTa'];
 
-        $sql_check = "SELECT * FROM monhoc WHERE MaMonHoc = '$maMonHoc'";
-        $result = $conn->query($sql_check);
+        $update_sql = "UPDATE monhoc SET MaMonHoc = '$MaMonHoc', TenMonHoc = '$TenMonHoc', SoTinChi = '$SoTinChi', idHocKy='$idHocKy', MoTa = '$MoTa' WHERE idMonHoc = '$idMonHoc'";
 
-        if ($result->num_rows == 0) {
-                $update_sql = "UPDATE monhoc SET MaMonHoc = '$MaMonHoc', TenMonHoc = '$TenMonHoc', SoTinChi = '$SoTinChi', MoTa = '$MoTa' WHERE idMonHoc = '$idMonHoc'";
-
-                mysqli_query($conn, $update_sql);
+        mysqli_query($conn, $update_sql);
         
-                header("Location: index_MonHoc.php");
-        } else {
-            echo "<script>
-                if (confirm('Trùng mã đã tồn tại. Không thể chèn bản ghi. Quay lại trang trước?')) {
-                    window.location.href = 'index_MonHoc.php';
-                } else {
-                    window.location.href = 'index_MonHoc.php';
-                }
-              </script>";
-        }
-
-        
+        header("Location: index_MonHoc.php");    
 ?>

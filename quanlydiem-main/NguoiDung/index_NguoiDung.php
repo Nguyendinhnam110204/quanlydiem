@@ -1,6 +1,5 @@
 <?php 
 session_start();
-$vaiTro = $_SESSION['VaiTro'];
 ?>
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
@@ -42,7 +41,6 @@ $vaiTro = $_SESSION['VaiTro'];
         <div class="menu-items">
         <ul class="nav-links">
             <!-- Dành cho admin -->
-            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="#">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
@@ -75,20 +73,17 @@ $vaiTro = $_SESSION['VaiTro'];
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <?php endif; ?>
 
 
                 <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                <!-- <li><a href="../themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
-                </a></li>
+                </a></li> -->
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
-                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">
@@ -150,12 +145,37 @@ $vaiTro = $_SESSION['VaiTro'];
                         // Câu lệnh SQL có điều kiện tìm kiếm
                         $searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
 
+                        // Số môn học trên mỗi trang
+                        $limit = 6;
+
+                        // Trang hiện tại, mặc định là trang 1
+                        $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+                        // Tính offset
+                        $offset = ($current_page - 1) * $limit;
+
                         // Câu lệnh SQL có điều kiện tìm kiếm
                         if ($searchTerm) {
-                            $list_sql = "SELECT * FROM nguoidung WHERE TenDangNhap LIKE '%$searchTerm%' ORDER BY VaiTro, TenDangNhap";
+                            $count_sql = "SELECT COUNT(*) AS total FROM nguoidung";
+                            $list_sql = "SELECT * FROM nguoidung WHERE TenDangNhap
+                                         LIKE '%$searchTerm%'
+                                         ORDER BY VaiTro, TenDangNhap
+                                         LIMIT $limit OFFSET $offset";
                         } else {
-                            $list_sql = "SELECT * FROM nguoidung ORDER BY VaiTro, TenDangNhap";
+                            $count_sql = "SELECT COUNT(*) AS total FROM nguoidung";
+                            $list_sql = "SELECT * FROM nguoidung
+                                         ORDER BY VaiTro, TenDangNhap
+                                         LIMIT $limit OFFSET $offset";
                         }
+
+                        // Thực hiện truy vấn lấy tổng số môn học
+                        $result_count = mysqli_query($conn, $count_sql);
+                        $row_count = mysqli_fetch_assoc($result_count);
+                        $total_records = $row_count['total'];
+
+                        // Tính số trang
+                        $total_pages = ceil($total_records / $limit);
+
                         //thuc thi cau lenh
                         $result = mysqli_query($conn, $list_sql);
 
@@ -177,9 +197,9 @@ $vaiTro = $_SESSION['VaiTro'];
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
-                                        Update
+                                        Sửa
                                     </button>
-                                    <a onclick="return confirm('Bạn có muốn xóa môn học này không')" href="delete_NguoiDung.php?idNguoiDung=<?php echo $row["idNguoiDung"] ;?>" class="btn btn-danger" style="margin-right: -15px">Delete</a>
+                                    <a onclick="return confirm('Bạn có muốn xóa môn học này không')" href="delete_NguoiDung.php?idNguoiDung=<?php echo $row["idNguoiDung"] ;?>" class="btn btn-danger" style="margin-right: -15px">Xóa</a>
                                 </td>
                             </tr>
                         <?php
@@ -190,6 +210,26 @@ $vaiTro = $_SESSION['VaiTro'];
                     </tr>
                 </tbody>
             </table>
+
+            <ul class="pagination justify-content-center" style="margin-left: -40px;">
+                <!-- Nút Previous -->
+                <li class="page-item <?php echo ($current_page == 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="index_NguoiDung.php?page=<?php echo ($current_page > 1) ? ($current_page - 1) : 1; ?>&searchTerm=<?php echo $searchTerm; ?>">Trước</a>
+                </li>
+
+                <!-- Các nút số trang -->
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="index_NguoiDung.php?page=<?php echo $i; ?>&searchTerm=<?php echo $searchTerm; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Nút Next -->
+                <li class="page-item <?php echo ($current_page == $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="index_NguoiDung.php?page=<?php echo ($current_page < $total_pages) ? ($current_page + 1) : $total_pages; ?>&searchTerm=<?php echo $searchTerm; ?>">Sau</a>
+                </li>
+            </ul>
+
         </div>
 
         <!-- The Modal -->

@@ -2,6 +2,7 @@
         $maMonHoc = $_POST['MaMonHoc'];
         $tenMonHoc = $_POST['TenMonHoc'];
         $soTinChi = $_POST['SoTinChi'];
+        $idHocKy = $_POST['idHocKy'];
         $moTa = $_POST['MoTa'];
 
         //ket noi csdl
@@ -11,7 +12,7 @@
         $result = $conn->query($sql_check);
 
         if ($result->num_rows == 0) {
-            $themsql = "INSERT INTO monhoc (MaMonHoc, TenMonHoc, SoTinChi, MoTa) VALUES ('$maMonHoc', '$tenMonHoc', '$soTinChi', '$moTa')";
+            $themsql = "INSERT INTO monhoc (MaMonHoc, TenMonHoc, SoTinChi,idHocKy , MoTa) VALUES ('$maMonHoc', '$tenMonHoc', '$soTinChi', '$idHocKy', '$moTa')";
             // echo $themsql; exit;
 
             //thuc thi cau lenh them

@@ -1,6 +1,5 @@
 <?php 
 session_start();
-$vaiTro = $_SESSION['VaiTro'];
 ?>
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
@@ -42,7 +41,6 @@ $vaiTro = $_SESSION['VaiTro'];
         <div class="menu-items">
         <ul class="nav-links">
             <!-- Dành cho admin -->
-            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
@@ -75,20 +73,17 @@ $vaiTro = $_SESSION['VaiTro'];
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <?php endif; ?>
 
 
                 <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                <!-- <li><a href="../themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
-                </a></li>
+                </a></li> -->
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
-                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">
@@ -121,15 +116,37 @@ $vaiTro = $_SESSION['VaiTro'];
         <div class="dash-content" style="margin-top: 20px;">
             <div class="container" style=" text-align:center">
             <h1 style="font-family: 'Times New Roman', Times, serif;"><b>Quản lý Môn học</b></h1>
-            
-            <div class="input-group mb-3" style="margin-top: 50px; width: 400px;">
-                <form action="index_MonHoc.php" method="get" style="display: flex; width: 100%;">
-                    <input type="search" class="form-control" placeholder="Tìm kiếm..." name="searchTerm">
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="submit" style="width: 100px;">Tìm Kiếm</button>
-                    </div>
-                </form>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="input-group mb-3" style="margin-top: 50px; width: 400px;">
+                            <form action="index_MonHoc.php" method="get" style="display: flex; width: 100%;">
+                                <input type="search" class="form-control" placeholder="Tìm kiếm..." name="searchTerm">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="submit" style="width: 100px;">Tìm Kiếm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+
+                    <td>
+                            <form action="index_MonHoc.php" method="get">
+                                <select name="hocKy" class="custom-select" style="margin-left: 250px; margin-top: 35px;" onchange="this.form.submit()">
+                                    <option value="">Chọn học kỳ</option>
+                                    <?php
+                                        // Kết nối và lấy danh sách học kỳ
+                                        require_once '../folderconnect/connect.php';
+                                        $sql = "SELECT idHocKy, NamHoc FROM hocky";
+                                        $result = mysqli_query($conn, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo '<option value="' . $row["idHocKy"] . '">' . $row["NamHoc"] . '</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </form>
+                    </td>
+                </tr>
+            </table>
 
             <br>
             <table class="table" style="margin: -15px 0 0 -10px; width:100%">
@@ -138,6 +155,7 @@ $vaiTro = $_SESSION['VaiTro'];
                         <th>Mã môn học</th>
                         <th>Tên môn học</th>
                         <th>Số tín chỉ</th>
+                        <th>Học kỳ</th>
                         <th>Mô tả</th>
                         <th>Thao tác</th>
                     </tr>
@@ -146,20 +164,66 @@ $vaiTro = $_SESSION['VaiTro'];
                     <?php
                         //ketnoi
                         require_once '../folderconnect/connect.php';
-                        // Câu lệnh SQL
                         
+                        //Tìm kiếm theo mã môn học và tên môn học
                         $searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
 
-                        // Câu lệnh SQL có điều kiện tìm kiếm
-                        if ($searchTerm) {
-                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa
+                        // Lọc theo học kỳ
+                        $hocKy = isset($_GET['hocKy']) ? $_GET['hocKy'] : '';
+
+
+                        // Số môn học trên mỗi trang
+                        $limit = 6;
+
+                        // Trang hiện tại, mặc định là trang 1
+                        $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+                        // Tính offset
+                        $offset = ($current_page - 1) * $limit;
+
+                        // Câu lệnh SQL có điều kiện tìm kiếm và phân trang
+                        if ($searchTerm && $hocKy) {
+                            $count_sql = "SELECT COUNT(*) AS total FROM monhoc WHERE (MaMonHoc LIKE '%$searchTerm%' OR TenMonHoc LIKE '%$searchTerm%') AND idHocKy = $hocKy";
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, hocky.NamHoc, monhoc.MoTa
                                         FROM monhoc
+                                        JOIN hocky ON monhoc.idHocKy = hocky.idHocKy
+                                        WHERE (monhoc.MaMonHoc LIKE '%$searchTerm%' 
+                                        OR monhoc.TenMonHoc LIKE '%$searchTerm%') AND monhoc.idHocKy = $hocKy
+                                        ORDER BY MaMonHoc, TenMonHoc
+                                        LIMIT $limit OFFSET $offset";
+                        } elseif ($searchTerm) {
+                            $count_sql = "SELECT COUNT(*) AS total FROM monhoc WHERE MaMonHoc LIKE '%$searchTerm%' OR TenMonHoc LIKE '%$searchTerm%'";
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, hocky.NamHoc, monhoc.MoTa
+                                        FROM monhoc
+                                        JOIN hocky ON monhoc.idHocKy = hocky.idHocKy
                                         WHERE monhoc.MaMonHoc LIKE '%$searchTerm%' 
                                         OR monhoc.TenMonHoc LIKE '%$searchTerm%'
-                                        ORDER BY MaMonHoc, TenMonHoc";
+                                        ORDER BY MaMonHoc, TenMonHoc
+                                        LIMIT $limit OFFSET $offset";
+                        } elseif ($hocKy) {
+                            $count_sql = "SELECT COUNT(*) AS total FROM monhoc WHERE idHocKy = $hocKy";
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, hocky.NamHoc, monhoc.MoTa
+                                        FROM monhoc
+                                        JOIN hocky ON monhoc.idHocKy = hocky.idHocKy
+                                        WHERE monhoc.idHocKy = $hocKy
+                                        ORDER BY MaMonHoc, TenMonHoc
+                                        LIMIT $limit OFFSET $offset";
                         } else {
-                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, monhoc.MoTa FROM monhoc ORDER BY MaMonHoc, TenMonHoc";
+                            $count_sql = "SELECT COUNT(*) AS total FROM monhoc";
+                            $list_sql = "SELECT monhoc.idMonHoc, monhoc.MaMonHoc, monhoc.TenMonHoc, monhoc.SoTinChi, hocky.NamHoc, monhoc.MoTa
+                                        FROM monhoc
+                                        JOIN hocky ON monhoc.idHocKy = hocky.idHocKy
+                                        ORDER BY MaMonHoc, TenMonHoc
+                                        LIMIT $limit OFFSET $offset";
                         }
+
+                        // Thực hiện truy vấn lấy tổng số môn học
+                        $result_count = mysqli_query($conn, $count_sql);
+                        $row_count = mysqli_fetch_assoc($result_count);
+                        $total_records = $row_count['total'];
+
+                        // Tính số trang
+                        $total_pages = ceil($total_records / $limit);
 
                         //thuc thi cau lenh
                         $result = mysqli_query($conn, $list_sql);
@@ -171,6 +235,7 @@ $vaiTro = $_SESSION['VaiTro'];
                                 <td><?php echo $row["MaMonHoc"] ?></td>
                                 <td><?php echo $row["TenMonHoc"] ?></td>
                                 <td><?php echo $row["SoTinChi"] ?></td>
+                                <td><?php echo $row["NamHoc"] ?></td>
                                 <td><?php echo $row["MoTa"] ?></td>
                                 <td>
                                     <button
@@ -179,14 +244,15 @@ $vaiTro = $_SESSION['VaiTro'];
                                         data-idMonHoc="<?php echo $row["idMonHoc"]; ?>"
                                         data-MaMonHoc="<?php echo $row["MaMonHoc"]; ?>" 
                                         data-TenMonHoc="<?php echo $row["TenMonHoc"]; ?>" 
-                                        data-SoTinChi="<?php echo $row["SoTinChi"]; ?>" 
+                                        data-SoTinChi="<?php echo $row["SoTinChi"]; ?>"
+                                        data-idHocKy="<?php echo $row["NamHoc"]; ?>" 
                                         data-MoTa="<?php echo $row["MoTa"]; ?>"   
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
-                                        Update
+                                        Sửa
                                     </button>
-                                    <a onclick="return confirm('Bạn có muốn xóa môn học này không')" href="delete_MonHoc.php?idMonHoc=<?php echo $row["idMonHoc"] ;?>" class="btn btn-danger" style="margin-right: -15px">Delete</a>
+                                    <a onclick="return confirm('Bạn có muốn xóa môn học này không')" href="delete_MonHoc.php?idMonHoc=<?php echo $row["idMonHoc"] ;?>" class="btn btn-danger" style="margin-right: -15px">Xóa</a>
                                 </td>
                             </tr>
                         <?php
@@ -197,6 +263,26 @@ $vaiTro = $_SESSION['VaiTro'];
                     </tr>
                 </tbody>
             </table>
+
+            <ul class="pagination justify-content-center" style="margin-left: -40px;">
+                <!-- Nút Previous -->
+                <li class="page-item <?php echo ($current_page == 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="index_MonHoc.php?page=<?php echo ($current_page > 1) ? ($current_page - 1) : 1; ?>&searchTerm=<?php echo $searchTerm; ?>&hocKy=<?php echo $hocKy; ?>">Trước</a>
+                </li>
+
+                <!-- Các nút số trang -->
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="index_MonHoc.php?page=<?php echo $i; ?>&searchTerm=<?php echo $searchTerm; ?>&hocKy=<?php echo $hocKy; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Nút Next -->
+                <li class="page-item <?php echo ($current_page == $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="index_MonHoc.php?page=<?php echo ($current_page < $total_pages) ? ($current_page + 1) : $total_pages; ?>&searchTerm=<?php echo $searchTerm; ?>&hocKy=<?php echo $hocKy; ?>">Sau</a>
+                </li>
+            </ul>
+
         </div>
 
         <!-- The Modal -->
@@ -225,6 +311,19 @@ $vaiTro = $_SESSION['VaiTro'];
                                 <input type="text" class="form-control" id="SoTinChi" name="SoTinChi" required>
                             </div>
                             <div class="form-group">
+                                <label for="idHocKy">Học kỳ</label>
+                                <select class="form-control" id="idHocKy" name="idHocKy">
+                                    <?php
+                                        $sql = "SELECT idHocKy, NamHoc FROM hocky";
+                                        $result = mysqli_query($conn, $sql);
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo '<option value="' . $row["idHocKy"] . '">' . $row["NamHoc"] . '</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="MoTa">Mô tả</label>
                                 <input type="text" class="form-control" id="MoTa" name="MoTa" required>
                             </div>
@@ -239,36 +338,42 @@ $vaiTro = $_SESSION['VaiTro'];
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Lấy tất cả các nút "Update"
-                        const updateButtons = document.querySelectorAll('.btn-update');
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Lấy tất cả các nút "Update"
+                            const updateButtons = document.querySelectorAll('.btn-update');
 
-                        updateButtons.forEach(button => {
-                            button.addEventListener('click', function() {
-                                // Lấy giá trị từ thuộc tính data-
-                                const idMonHoc = this.getAttribute('data-idMonHoc');
-                                const maMonHoc = this.getAttribute('data-MaMonHoc');
-                                const tenMonHoc = this.getAttribute('data-TenMonHoc');
-                                const soTinChi = this.getAttribute('data-SoTinChi');
-                                const moTa = this.getAttribute('data-MoTa');
+                            updateButtons.forEach(button => {
+                                button.addEventListener('click', function() {
+                                    // Lấy giá trị từ thuộc tính data-
+                                    const idMonHoc = this.getAttribute('data-idMonHoc');
+                                    const maMonHoc = this.getAttribute('data-MaMonHoc');
+                                    const tenMonHoc = this.getAttribute('data-TenMonHoc');
+                                    const soTinChi = this.getAttribute('data-SoTinChi');
+                                    const idHocKy = this.getAttribute('data-idHocKy');
+                                    const moTa = this.getAttribute('data-MoTa');
 
-                                // Điền giá trị vào các trường trong modal
-                                document.getElementById('update_idMonHoc').value = idMonHoc;
-                                document.getElementById('update_MaMonHoc').value = maMonHoc ;
-                                document.getElementById('update_TenMonHoc').value = tenMonHoc;
-                                document.getElementById('update_SoTinChi').value = soTinChi;
-                                document.getElementById('update_MoTa').value = moTa;
+                                    // Điền giá trị vào các trường trong modal
+                                    document.getElementById('update_idMonHoc').value = idMonHoc;
+                                    document.getElementById('update_MaMonHoc').value = maMonHoc ;
+                                    document.getElementById('update_TenMonHoc').value = tenMonHoc;
+                                    document.getElementById('update_SoTinChi').value = soTinChi;
+                                    document.getElementById('update_MoTa').value = moTa;
+
+                                    // Đặt giá trị cho select idHocKy
+                                    const hocKySelect = document.getElementById('update_idHocKy');
+                                    hocKySelect.value = idHocKy;
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
 
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title" style="font-family: 'Times New Roman', Times, serif;">Sửa Thông tin môn học</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
+
                     <!-- Modal Sửa -->
                     <div class="modal-body">
                         <form action="update_MonHoc.php" method="post">
@@ -286,6 +391,19 @@ $vaiTro = $_SESSION['VaiTro'];
                                 <input type="text" class="form-control" id="update_SoTinChi" name="SoTinChi" required>
                             </div>
                             <div class="form-group">
+                                <label for="update_idHocKy">Học kỳ</label>
+                                <select class="form-control" id="update_idHocKy" name="idHocKy" required>
+                                    <?php
+                                        $sql = "SELECT idHocKy, NamHoc FROM hocky";
+                                        $result = mysqli_query($conn, $sql);
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo '<option value="' . $row["idHocKy"] . '">' . $row["NamHoc"] . '</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="update_MoTa">Mô tả</label>
                                 <input type="text" class="form-control" id="update_MoTa" name="MoTa" required>
                             </div>
@@ -296,6 +414,7 @@ $vaiTro = $_SESSION['VaiTro'];
                 </div>
             </div>
         </div>
+
         </div>
     </section>
 
