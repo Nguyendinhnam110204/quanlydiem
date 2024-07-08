@@ -1,6 +1,16 @@
 <?php
+
 session_start();
 $vaiTro = $_SESSION['VaiTro'];
+if (!isset($_SESSION['VaiTro'])) {
+    // Chưa đăng nhập
+    echo "<script>
+            alert('Bạn chưa đăng nhập.');
+            window.location.href = '../Login/DangNhap_Index.php';
+        </script>";
+    exit;
+}
+
 require_once '../folderconnect/connect.php';
     $hienthi_sql= "SELECT * FROM hedaotao order by MaHeDT,TenHeDT";
     $result = mysqli_query($conn,$hienthi_sql);
@@ -62,7 +72,7 @@ require_once '../folderconnect/connect.php';
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../giangvien/Index_giangvien.php">
                     <i class="uil uil-file-info-alt"></i>
                     <span class="link-name">Thông tin giảng viên</span>
                 </a></li>
@@ -86,19 +96,24 @@ require_once '../folderconnect/connect.php';
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <?php endif; ?>
-
-
-                <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' ): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="../bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật điểm</span>
+                </a></li>
+               
                 <?php endif; ?>
             </ul>
             
@@ -145,7 +160,7 @@ require_once '../folderconnect/connect.php';
 
         <table class="table" style="margin: -15px 0 0 -10px; width:100%">
             <thead class="thead-dark">
-                <tr>
+                <tr style=" text-align:center;">
                     <th scope="col">Mã hệ đào tạo</th>
                     <th scope="col">Tên hệ đào tạo</th>
                     <th scope="col">Thao tác</th>
@@ -153,7 +168,7 @@ require_once '../folderconnect/connect.php';
             </thead>
             <tbody>
             <?php while($r = mysqli_fetch_assoc($result)){ ?>
-                <tr>
+                <tr style=" text-align:center;">
                     <td><?php echo $r['MaHeDT']; ?></td>
                     <td><?php echo $r['TenHeDT']; ?></td>
                     <td>

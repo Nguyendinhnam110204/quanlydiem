@@ -30,9 +30,9 @@
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
-                <li><a href="./baocaovathongke/baocao.php">
-                    <i class="uil uil-analytics"></i>
-                    <span class="link-name">Báo cáo và thống kê</span>
+                <li><a href="./themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
                 </a></li>
             </ul>
             

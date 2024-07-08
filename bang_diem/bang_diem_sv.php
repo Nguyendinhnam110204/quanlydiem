@@ -2,41 +2,66 @@
 require_once '../folderconnect/connect.php';
 session_start();
 $vaiTro = $_SESSION['VaiTro'];
-// if (!isset($_SESSION['VaiTro'])) {
-//     // Chưa đăng nhập
-//     echo "<script>
-//             alert('Bạn chưa đăng nhập.');
-//             window.location.href = 'Dangnhap_Index.php';
-//         </script>";
-//     exit;
-// }
+if (!isset($_SESSION['VaiTro'])) {
+    // Chưa đăng nhập
+    echo "<script>
+            alert('Bạn chưa đăng nhập.');
+            window.location.href = '../Login/DangNhap_Index.php';
+        </script>";
+    exit;
+}
 
 // $vaiTro = $_SESSION['VaiTro'];
 
-if (isset($_SESSION['idNguoiDung'])) {
-    $idNguoiDung = $_SESSION['idNguoiDung'];
-
+if (isset($_SESSION['idNguoiDung']) && isset($_SESSION['TenDangNhap'])) {
+    // $idNguoiDung = $_SESSION['idNguoiDung'];
+    $maGiangVien = $_SESSION['TenDangNhap'] ;
+// Truy vấn cơ sở dữ liệu để lấy idGiangVien tương ứng
+$sql = "SELECT idGiangVien , MaGiangVien  FROM giangvien WHERE MaGiangVien = '$maGiangVien'";
+$result = mysqli_query($conn, $sql);
+if ($result && mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $idGiangVien = $row['idGiangVien'];
+} else {
+    echo "Không tìm thấy giảng viên với mã: $maGiangVien";
+    exit;
+}
     $sql_lophoc = "SELECT gv.*, lop.* FROM lop 
                    JOIN giangvien gv ON gv.idGiangVien = lop.idGiangVien
-                   WHERE gv.idGiangVien = '$idNguoiDung'";
+                   WHERE gv.idGiangVien = '$idGiangVien'";
     $result = mysqli_query($conn, $sql_lophoc);
+    $result_lophoc2 = mysqli_query($conn, $sql_lophoc);
 }
 $sql_hocky = "SELECT * FROM hocky ";
 $result_hocky = mysqli_query($conn, $sql_hocky);
+$result_hocky2 = mysqli_query($conn, $sql_hocky);
 
-$sql_danhsachdiemsv = "SELECT diem.*, lop.*, sinhvien.* ,HocKy.*
+$sql_danhsachdiemsv = "SELECT diem.*, lop.*, sinhvien.*, HocKy.*, monhoc.*
                        FROM diem
-                       LEFT JOIN sinhvien ON sinhvien.idSinhVien = diem.idSinhVien
-                        LEFT JOIN HocKy ON HocKy.idHocKy = diem.idHocKy
-                        LEFT JOIN lop ON lop.idLop = sinhvien.idLop";
+                       JOIN sinhvien ON sinhvien.idSinhVien = diem.idSinhVien
+                       JOIN HocKy ON HocKy.idHocKy = diem.idHocKy
+                       JOIN lop ON lop.idLop = sinhvien.idLop
+                       JOIN monhoc ON monhoc.idMonHoc = diem.idMonHoc";
 
-if (isset($_POST['loclop']) && $_POST['loclop'] != 0) {
+if (isset($_POST['loclop']) && $_POST['loclop'] != 0 && isset($_POST['monhoc']) && isset($_POST['btntkdiem1']) && isset($_POST['hocky'])  ) {
     $idlop = $_POST['loclop'];
-    if(isset($_POST['hocky'])){
-      $idhocky = $_POST['hocky'];
-    $sql_danhsachdiemsv .= " WHERE lop.idLop = '$idlop' AND diem.TongKetHocPhan < 4.0 AND diem.idHocKy ='$idhocky' ";
-    }
-   
+    $idMonHoc = $_POST['monhoc'];
+    $idhocky = $_POST['hocky'];
+    $_SESSION['loclop'] = $idlop;
+    $_SESSION['monhoc'] = $idMonHoc;
+    $_SESSION['hocky'] = $idhocky;
+    $sql_danhsachdiemsv .= " WHERE DiemCuoiKylan1 IS NULL AND DiemCuoiKylan2 IS NULL   AND lop.idLop = '$idlop' AND diem.idHocKy = '$idhocky' AND diem.idMonHoc = '$idMonHoc'  ";
+} else {
+    $result_danhsach = false;
+}
+if (isset($_POST['loclop2']) && $_POST['loclop2'] != 0 && isset($_POST['monhoc2']) && isset($_POST['btntkdiem2']) && isset($_POST['hocky2'])  ) {
+    $idlop2 = $_POST['loclop2'];
+    $idMonHoc2 = $_POST['monhoc2'];
+    $idhocky2 = $_POST['hocky2'];
+    $_SESSION['loclop2'] = $idlop2;
+    $_SESSION['monhoc2'] = $idMonHoc2;
+    $_SESSION['hocky2'] = $idhocky2;
+    $sql_danhsachdiemsv .= " WHERE DiemCuoiKylan2 IS NULL  AND lop.idLop = '$idlop2' AND diem.idHocKy = '$idhocky2' AND diem.idMonHoc = '$idMonHoc2'  ";
 } else {
     $result_danhsach = false;
 }
@@ -45,7 +70,6 @@ $result_danhsach = mysqli_query($conn, $sql_danhsachdiemsv);
 mysqli_close($conn);
 ?>
 <!DOCTYPE html>
-<!--=== Coding by CodingLab | www.codinglabweb.com === -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -132,18 +156,22 @@ mysqli_close($conn);
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
+                <li><a href="../baocaovathongke/baocao.php">
+                    <i class="uil uil-analytics"></i>
+                    <span class="link-name">Báo cáo và thống kê</span>
+                </a></li>
                 <?php endif; ?>
 
 
                 <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
+            <?php if ($vaiTro == 'giao_vien'): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
                 <li><a href="#">
                     <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
-                <li><a href="../baocaovathongke/baocao.php">
-                    <i class="uil uil-analytics"></i>
-                    <span class="link-name">Báo cáo và thống kê</span>
+                    <span class="link-name">Cập Nhật điểm</span>
                 </a></li>
                 <?php endif; ?>
             </ul>
@@ -179,7 +207,7 @@ mysqli_close($conn);
                 
                 <form action="" method="post">
                 <div style="display:flex; padding:20px 20px;">
-                <button  class="btn btn-success" type="submit" style="margin-top:2px;height:40px;" name="btntkdiem">Bộ Lọc</button>
+                <button  class="btn btn-success" type="submit" style="margin-top:2px;height:40px;" name="btntkdiem1">Cập Nhật Lần 1</button>
                 <select name="loclop" id="lopSelect" style="width:200px; text-align:center; margin:0 10px;" class="lop">
                     <option value="0">Theo Lớp..</option>
                     <?php 
@@ -196,11 +224,50 @@ mysqli_close($conn);
                     <?php 
                     while($rows = mysqli_fetch_assoc($result_hocky)){
                       ?>
-                      <option value="<?php echo $rows['idHocKy']; ?>"><?php echo $rows['TenHocKy']; ?></option>
+                      <option value="<?php echo $rows['idHocKy']; ?>"><?php echo $rows['NamHoc']; ?></option>
                       <?php
                     }
                     
                     ?>
+                </select>
+                <select name="monhoc" id="monhocSelect" style="width:200px; text-align:center; margin:0 10px;" class="monhoc">
+                    <option value="0">Môn Học..</option>
+                </select>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <div  style="display: flex; justify-content: space-between;">
+            <div style="display:flex; margin-top:5px;align-items:center;">
+                
+                <form action="" method="post">
+                <div style="display:flex; padding:20px 20px;">
+                <button  class="btn btn-success" type="submit" style="margin-top:2px;height:40px;" name="btntkdiem2">Cập Nhật Lần 2</button>
+                <select name="loclop2" id="lopSelect2" style="width:200px; text-align:center; margin:0 10px;" class="lop">
+                    <option value="0">Theo Lớp..</option>
+                    <?php 
+                    while($r = mysqli_fetch_assoc($result_lophoc2)){
+                      ?>
+                      <option value="<?php echo $r['idLop']; ?>"><?php echo $r['TenLop']; ?></option>
+                      <?php
+                    }
+                    
+                    ?>
+                </select>
+                <select name="hocky2" id="hockySelect2" style="width:200px; text-align:center; margin:0 10px;" class="hocky">
+                    <option value="0">hocky..</option>
+                    <?php 
+                    while($rows = mysqli_fetch_assoc($result_hocky2)){
+                      ?>
+                      <option value="<?php echo $rows['idHocKy']; ?>"><?php echo $rows['NamHoc']; ?></option>
+                      <?php
+                    }
+                    
+                    ?>
+                </select>
+                <select name="monhoc2" id="monhocSelect2" style="width:200px; text-align:center; margin:0 10px;" class="monhoc">
+                    <option value="0">Môn Học..</option>
                 </select>
                 </div>
                 </form>
@@ -217,7 +284,8 @@ mysqli_close($conn);
           <th>Năm Học</th>
           <th>Điểm Chuyên Cần</th>
           <th>Điểm Giữa Kỳ</th>
-          <th>Điểm Cuối Kỳ</th>
+          <th>Điểm Cuối Kỳ Lần 1</th>
+          <th>Điểm Cuối Kỳ Lần 2</th>
           <th>Tổng Kết Học Phần</th>
           <th>Điểm Chữ</th>
           <th>Đánh Giá</th>
@@ -235,7 +303,8 @@ mysqli_close($conn);
                   <td><?php echo $row['NamHoc']; ?></td>
                   <td><?php echo $row['DiemChuyenCan']; ?></td>
                   <td><?php echo $row['DiemGiuaKy']; ?></td>
-                  <td><?php echo $row['DiemCuoiKy']; ?></td>
+                  <td><?php echo $row['DiemCuoiKylan1']; ?></td>
+                  <td><?php echo $row['DiemCuoiKylan2']; ?></td>
                   <td><?php echo $row['TongKetHocPhan']; ?></td>
                   <td><?php echo $row['DiemChu']; ?></td>
                   <td><?php echo $row['DanhGia']; ?></td>
@@ -249,7 +318,8 @@ mysqli_close($conn);
           data-TenLop="<?php echo $row['TenLop']; ?>" 
           data-DiemChuyenCan="<?php echo $row['DiemChuyenCan']; ?>" 
           data-DiemGiuaKy="<?php echo $row['DiemGiuaKy']; ?>" 
-          data-DiemCuoiKy="<?php echo $row['DiemCuoiKy']; ?>" 
+          data-DiemCuoiKylan1="<?php echo $row['DiemCuoiKylan1']; ?>"
+          data-DiemCuoiKylan2="<?php echo $row['DiemCuoiKylan2']; ?>"
           data-toggle="modal" 
           data-target="#myModal-update"
           style="margin-right: 10px">
@@ -260,7 +330,7 @@ mysqli_close($conn);
           <?php } 
           }else { ?>
           <tr>
-              <td colspan="11">Không tồn tại sinh viên phải thi lại</td>
+              <td colspan="12">Không tồn tại sinh viên phải thi lại</td>
           </tr>
        <?php  } 
       }?>
@@ -268,7 +338,7 @@ mysqli_close($conn);
  <!-- Kết thúc dữ liệu mẫu -->
   </tbody>
   </table>
-   </div>
+</div>
     </section>
     <script src="../JS/Admin_Script.js"></script>
     <div class="modal" id="myModal-update">
@@ -291,11 +361,11 @@ mysqli_close($conn);
                         </div>
                         <div class="form-group">
                             <label for="update_email_HoTen">Tên Sinh Viên</label>
-                            <input type="text" class="form-control" id="update_HoTen" name="HoTen" required>
+                            <input type="text" class="form-control" id="update_HoTen" name="HoTen" readonly>
                         </div>
                         <div class="form-group">
                             <label for="update_TenLop">Lớp</label>
-                            <input type="text" class="form-control" id="update_TenLop" name="TenLop" required>
+                            <input type="text" class="form-control" id="update_TenLop" name="TenLop" readonly>
                         </div>
                         <div class="form-group">
                             <label for="update_DiemChuyenCan">Diểm Chuyên Cần</label>
@@ -307,8 +377,12 @@ mysqli_close($conn);
                         </div>
 
                         <div class="form-group">
-                            <label for="update_DiemCuoiKy">Diểm Cuối Kỳ</label>
-                            <input type="text" class="form-control" id="update_DiemGiuaKy" name="DiemCuoiKy" required>
+                            <label for="update_DiemCuoiKylan1">Diểm Cuối Kỳ Lần 1 </label>
+                            <input type="text" class="form-control" id="update_DiemCuoiKylan1" name="DiemCuoiKylan1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="update_DiemCuoiKylan2">Diểm Cuối Kỳ Lần 2 </label>
+                            <input type="text" class="form-control" id="update_DiemCuoiKylan2" name="DiemCuoiKylan2" >
                         </div>
                         <button type="submit" class="btn btn-success">Cập nhật</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-left: 275px;">Đóng</button>
@@ -331,7 +405,8 @@ mysqli_close($conn);
                         const TenLop = this.getAttribute('data-TenLop');
                         const DiemChuyenCan = this.getAttribute('data-DiemChuyenCan');
                         const DiemGiuaKy = this.getAttribute('data-DiemGiuaKy');
-                        const DiemCuoiKy= this.getAttribute('data-DiemCuoiKy');
+                        const DiemCuoiKylan1= this.getAttribute('data-DiemCuoiKylan1');
+                        const DiemCuoiKylan2= this.getAttribute('data-DiemCuoiKylan2');
                         // Điền giá trị vào các trường trong modal
                         document.getElementById('update_idDiem').value= idDiem;
                         document.getElementById('update_MaSinhVien').value = MaSinhVien;
@@ -339,11 +414,42 @@ mysqli_close($conn);
                         document.getElementById('update_TenLop').value = TenLop;
                         document.getElementById('update_DiemChuyenCan').value = DiemChuyenCan;
                         document.getElementById('update_DiemGiuaKy').value = DiemGiuaKy;
-                        document.getElementById('update_DiemCuoiKy').value = DiemCuoiKy;
+                        document.getElementById('update_DiemCuoiKylan1').value = DiemCuoiKylan1;
+                        document.getElementById('update_DiemCuoiKylan2').value = DiemCuoiKylan2;
                     });
                 });
             });
         </script>
+<!-- lọc môn học theo học kỳ và lớp học -->
+<script>
+        $(document).ready(function() {
+            $('#lopSelect, #hockySelect').change(function() {
+                var idLop = $('#lopSelect').val();
+                var idHocKy = $('#hockySelect').val();
+                if (idLop != 0 && idHocKy != 0) {
+                    $.post('../timkiem/locmonhoc_bd.php', { idLop: idLop, idHocKy: idHocKy }, function(data) {
+                        $('#monhocSelect').html('<option value="0">Môn Học..</option>' + data);
+                    });
+                }
+            });
+        });
+    </script>
+
+
+<script>
+        $(document).ready(function() {
+            $('#lopSelect2, #hockySelect2').change(function() {
+                var idLop2 = $('#lopSelect2').val();
+                var idHocKy2 = $('#hockySelect2').val();
+                if (idLop2 != 0 && idHocKy2 != 0) {
+                    $.post('../timkiem/locmonhoc_bd2.php', { idLop2: idLop2, idHocKy2: idHocKy2 }, function(data) {
+                        $('#monhocSelect2').html('<option value="0">Môn Học..</option>' + data);
+                    });
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

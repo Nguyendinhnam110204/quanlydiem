@@ -2,36 +2,55 @@
 session_start();
 require_once '../folderconnect/connect.php';
 $vaiTro = $_SESSION['VaiTro'];
-// Fetch hocky data
+// Lấy dữ liệu từ bảng hocky
 $sql_hocky = "SELECT * FROM hocky";
 $result_hocky = mysqli_query($conn, $sql_hocky);
 
-// Fetch Khoa data
+// Lấy dữ liệu từ bảng Khoa
 $sql_Khoa = "SELECT * FROM Khoa";
 $result_Khoa = mysqli_query($conn, $sql_Khoa);
 
 $result = null;
-
-if(isset($_POST['Khoa']) && $_POST['Khoa'] != '0' && isset($_POST['hocKy'])){
+$loaibaocao = '';
+if(isset($_POST['Khoa']) && $_POST['Khoa'] != '0' && isset($_POST['NamHoc']) && isset($_POST['loaiBaoCao']) && isset($_POST['btntaobaocao'])){
     $idKhoa = $_POST['Khoa'];
-    $idHocKy = $_POST['hocKy'];
-    $_SESSION['idKhoa'] = $_POST['Khoa'];
-    $_SESSION['idHocKy'] = $_POST['hocKy'];
-    // Construct SQL query
-    $sql = "SELECT lop.*, khoa.*, sinhvien.*, gpa.*, hocky.*
+    $idHocKy = $_POST['NamHoc'];
+     $_SESSION['idKhoa'] = $_POST['Khoa'];
+     $_SESSION['idHocKy'] = $_POST['NamHoc'];
+    $loaibaocao = $_POST['loaiBaoCao'];
+    if( $loaibaocao === 'hocbong'){
+        $sql_hocbong = "SELECT lop.*, khoa.*, sinhvien.*, gpa.*, hocky.*
             FROM lop
             JOIN khoa ON khoa.idKhoa = lop.idKhoa
             JOIN sinhvien ON lop.idLop = sinhvien.idLop
             JOIN gpa ON gpa.idSinhVien = sinhvien.idSinhVien
             JOIN hocky ON gpa.idHocKy = hocky.idHocKy
-            WHERE lop.idKhoa = '$idKhoa' AND gpa.GPA < 4.0 AND gpa.GPA > 2.5  AND gpa.idHocKy = '$idHocKy'";
-    $result = mysqli_query($conn, $sql);
-    
-    if (!$result) {
-        // Handle MySQL query error
-        echo "Query error: " . mysqli_error($conn);
+            WHERE lop.idKhoa = '$idKhoa' AND gpa.GPA <= 4.0 AND gpa.GPA > 2.5  AND gpa.idHocKy = '$idHocKy'";
+            $result_hocbong = mysqli_query($conn, $sql_hocbong);
     }
+    else if($loaibaocao === 'thilai'){
+        $sql_thilai = "SELECT lop.*, khoa.*, sinhvien.*, diem.*, hocky.*
+        FROM lop
+        JOIN khoa ON khoa.idKhoa = lop.idKhoa
+        JOIN sinhvien ON lop.idLop = sinhvien.idLop
+        JOIN diem ON diem.idSinhVien = sinhvien.idSinhVien
+        JOIN hocky ON diem.idHocKy = hocky.idHocKy
+        WHERE lop.idKhoa = '$idKhoa' AND diem.TongKetHocPhan < 4.0  AND diem.idHocKy = '$idHocKy'";
+        $result_thilai = mysqli_query($conn, $sql_thilai);
+    }
+//     // Construct SQL query
+//     $result = mysqli_query($conn, $sql);
+//     //   // In ra số hàng trả về
+//     // echo "Number of rows: " . mysqli_num_rows($result);
+
+//    if (!$result) {
+//         echo "Query error: " . mysqli_error($conn);}
+//     // } else {
+//     //     echo "Number of rows: " . mysqli_num_rows($result);
+//     // }
 }
+
+
 
 mysqli_close($conn);
 ?>
@@ -155,19 +174,24 @@ mysqli_close($conn);
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <?php endif; ?>
-
-
-                <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
                 <li><a href="#">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                    <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' ): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="../bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật điểm</span>
+                </a></li>
+              
                 <?php endif; ?>
             </ul>
             
@@ -201,9 +225,10 @@ mysqli_close($conn);
         <div class="dash-content">
             <!-- Chứa chi tiết các chức năng ở đây -->
             <!-- <input type="hidden" id="loaibaocao" name="txtbaocao" value = ""> -->
+            <input type="hidden" name = "txtloaibaocao" id ="txtloaibaocao" value="<?php echo $loaibaocao ; ?>">
 <div class="container">
         <h1>Báo Cáo và Thống Kê</h1>
-        <form action="#" method="POST">
+        <form action="" method="POST">
             <div class="form-group">
                 <label for="NamHoc">Năm Học:</label>
                 <select id="NamHoc" name="NamHoc">
@@ -217,19 +242,6 @@ mysqli_close($conn);
                     ?>
                 </select>
             </div>
-
-            <div class="form-group">
-                <label for="namHoc">Năm học:</label>
-                <select class="form-control" id="namHoc" name="namHoc">
-                    <option value="0">---</option>
-                    <option value="2023-2024_1">2023-2024_1</option>
-                    <option value="2023-2024_2">2023-2024_2</option>
-                    <option value="2024">2024</option>
-                    
-                    <!-- Add more options as needed -->
-                </select>
-            </div>
-
             <div class="form-group">
                 <label for="Khoa">Khoa:</label>
                 <select class="form-control" id="Khoa" name="Khoa">
@@ -247,34 +259,34 @@ mysqli_close($conn);
             <div class="form-group">
                 <label for="loaiBaoCao">Loại Báo Cáo:</label>
                 <select id="loaiBaoCao" name="loaiBaoCao">
+                    <option value="0">---</option>
                     <option value="thilai">Báo Cáo Sinh Viên phải thi lại</option>
                     <option value="hocbong">Báo Cáo Sinh Viên ĐƯỢC HỌC BỔNG</option>
                     <!-- Thêm các loại báo cáo khác ở đây -->
                 </select>
             </div>
             <div class="form-actions">
-                <button type="submit">Tạo Báo Cáo</button>
-                <button type="reset">Làm Mới</button>
+                <button type="submit" name = "btntaobaocao">Tạo Báo Cáo</button>
                 <button type="button" onclick="showResults()">Hiện ra</button>
             </div>
         </form>
         <form action="XUATEXCEL.PHP" method="post" >
-<div id="ketQuahocbong" style="display: none;">
+          <div id="ketQuahocbong" style="display: none;">
             <h2>Kết Quả</h2>
-            <?php if ($result && mysqli_num_rows($result) > 0) : ?>
+            <?php if ($result_hocbong && mysqli_num_rows($result_hocbong) > 0) : ?>
                 <table class="table table-bordered table-striped full-width-table">
                     <thead class="thead-dark">
                         <tr>
                             <th>Mã Sinh Viên</th>
                             <th>Họ Và Tên</th>
                             <th>Tên Lớp</th>
-                            <th>Học kỳ</th>
+                            <th>Năm Học</th>
                             <th>GPA</th>
                             <th>Loại Học Bổng</th>
                         </tr>
                     </thead>
                     <tbody>    
-                        <?php while ($row = mysqli_fetch_assoc($result)) :
+                        <?php while ($row = mysqli_fetch_assoc($result_hocbong)) :
                             
                             $gpa = $row['GPA'];
                             if($gpa >= 3.6 && $gpa <= 4.0){
@@ -287,8 +299,6 @@ mysqli_close($conn);
                             }
 
                             ?>
-                            
-
                         <tr>
                             <td><?php echo $row['MaSinhVien']; ?></td>
                             <td><?php echo $row['HoTen']; ?></td>
@@ -306,14 +316,14 @@ mysqli_close($conn);
              <div class="form-actions">
              <button type="submit" name="btnxuatexcel"
              >Xuất Excel</button>
+             </div>
          </div>
-        </div>
         </form>
-    </div>
-        </div>
-        <div id="ketQuathilai" style="display: none;" >
-            <form action="" method="post">
-            <?php if ($result && mysqli_num_rows($result) > 0) : ?>
+   
+        <form action="xuatexcelsvthilai.php" method="post">
+           <div id="ketQuathilai" style="display: none;" >
+           <h2>Kết Quả</h2>
+            <?php if ($result_thilai && mysqli_num_rows($result_thilai) > 0) : ?>
                 <table class="table table-bordered table-striped full-width-table">
                     <thead class="thead-dark">
                         <tr>
@@ -321,19 +331,19 @@ mysqli_close($conn);
                             <th>Họ Và Tên</th>
                             <th>Tên Lớp</th>
                             <th>Năm Học</th>
-                            <th>Điểm Tổng Kết Học Phần</th>
+                            <th>Tổng Kết Học Phần</th>
                             <th>Đánh Giá</th>
                         </tr>
                     </thead>
                     <tbody>    
-                        <?php while ($row = mysqli_fetch_assoc($result)) :?>
+                        <?php while ($rows = mysqli_fetch_assoc($result_thilai)) : ?>
                         <tr>
-                            <td><?php echo $row['MaSinhVien']; ?></td>
-                            <td><?php echo $row['HoTen']; ?></td>
-                            <td><?php echo $row['TenLop']; ?></td>
-                            <td><?php echo $row['TenHocKy']; ?></td>
-                            <td><?php echo $row['GPA']; ?></td>
-                            <td><?php echo $loaiHocBong; ?></td>
+                            <td><?php echo $rows['MaSinhVien']; ?></td>
+                            <td><?php echo $rows['HoTen']; ?></td>
+                            <td><?php echo $rows['TenLop']; ?></td>
+                            <td><?php echo $rows['NamHoc']; ?></td>
+                            <td><?php echo $rows['TongKetHocPhan']; ?></td>
+                            <td><?php echo $rows['DanhGia']; ?></td>
                         </tr>
                         <?php endwhile; ?>    
                     </tbody>
@@ -342,18 +352,28 @@ mysqli_close($conn);
                 <p>Không tìm thấy kết quả mong đợi.</p>
             <?php endif; ?>
             <div class="form-actions">
-             <button type="submit" name="btnxuatexcel2"
-             >Xuất Excel</button>
+             <button type="submit" name="btnxuatexcel_thilai">Xuất Excel</button>
+            </div>
+           </div> 
+        </form>
          </div>
-            </form>
-        </div>
+ </div>
     </section>
     <script src="../JS/Admin_Script.js"></script>
 
     <script>
         function showResults() {
+            const loaibaocao = document.getElementById('txtloaibaocao').value;
             var resultsDiv = document.getElementById('ketQuahocbong');
+            var resultsDivthilai = document.getElementById('ketQuathilai');
+            if(loaibaocao === 'hocbong'){
+                resultsDivthilai.style.display = 'none';    
             resultsDiv.style.display = 'block';
+            }
+            else if(loaibaocao === 'thilai'){
+                resultsDivthilai.style.display = 'block';    
+                resultsDiv.style.display = 'none';
+            }
         }
     </script>
 </body>

@@ -1,5 +1,14 @@
 <?php 
 session_start();
+$vaiTro = $_SESSION['VaiTro'];
+if (!isset($_SESSION['VaiTro'])) {
+    // Chưa đăng nhập
+    echo "<script>
+            alert('Bạn chưa đăng nhập.');
+            window.location.href = '../Login/DangNhap_Index.php';
+        </script>";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
@@ -41,6 +50,7 @@ session_start();
         <div class="menu-items">
         <ul class="nav-links">
             <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="#">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
@@ -73,17 +83,25 @@ session_start();
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-
-
-                <!-- Dành cho giáo viên và admin -->
-                <!-- <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li> -->
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' ): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="../bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật điểm</span>
+                </a></li>
+              
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">

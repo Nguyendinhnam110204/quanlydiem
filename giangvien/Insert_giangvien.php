@@ -1,3 +1,15 @@
+<?php 
+session_start();
+$vaiTro = $_SESSION['VaiTro'];
+if (!isset($_SESSION['VaiTro'])) {
+    // Chưa đăng nhập
+    echo "<script>
+            alert('Bạn chưa đăng nhập.');
+            window.location.href = '../Login/DangNhap_Index.php';
+        </script>";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
 <html lang="en">
@@ -35,43 +47,64 @@
         </div>
 
         <div class="menu-items">
-            <ul class="nav-links">
-                <li><a href="#">
+        <ul class="nav-links">
+            <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
+                <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="#">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
-                <li><a href="Index_sinhvien.php">
+                <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
                 </a></li>
-                <li><a href="Index_giangvien.php">
-                    <i class="uil uil-file-info-alt"></i>
-                    <span class="link-name">Thông tin giáo viên</span>
-                </a></li>
                 <li><a href="#">
+                    <i class="uil uil-file-info-alt"></i>
+                    <span class="link-name">Thông tin giảng viên</span>
+                </a></li>
+                <li><a href="../MonHoc/index_MonHoc.php">
                     <i class="uil uil-subject"></i>
                     <span class="link-name">Môn học</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Lop/Quan_ly_thong_tin_lop.php">
+                    <i class="uil uil-book-open"></i>
+                    <span class="link-name">Lớp</span>
+                </a></li>
+                <li><a href="../Khoa/Quan_ly_thong_tin_khoa.php">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hedaotao/Quan_ly_he_dao_tao.php">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
+                </a></li>
+                <li><a href="../Hocky/Quan_ly_hocky.php">
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' ): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="../bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật điểm</span>
+                </a></li>
+               
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">
-                <li><a href="#">
+                <li><a href="../Login/DangNhap_Index.php">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>

@@ -24,7 +24,7 @@ if ($gpaResult->num_rows > 0) {
         $idGPA = $gpaRow['idGPA'];
 
         // Query to get grades information from Diem table using idGPA
-        $gradesQuery = "SELECT mh.MaMonHoc, mh.TenMonHoc, mh.SoTinChi, d.DiemChuyenCan, d.DiemGiuaKy, d.DiemCuoiKy, d.DanhGia, d.TongKetHocPhan, d.DiemChu
+        $gradesQuery = "SELECT mh.MaMonHoc, mh.TenMonHoc, mh.SoTinChi, d.DiemChuyenCan, d.DiemGiuaKy, d.DiemCuoiKylan1,d.DiemCuoiKylan2, d.DanhGia, d.TongKetHocPhan, d.DiemChu
                         FROM Diem d
                         JOIN MonHoc mh ON d.idMonHoc = mh.idMonHoc
                         WHERE d.idGPA = $idGPA";
@@ -41,7 +41,8 @@ if ($gpaResult->num_rows > 0) {
                         <td>{$grade['DanhGia']}</td>
                         <td>{$grade['DiemChuyenCan']}</td>
                         <td>{$grade['DiemGiuaKy']}</td>
-                        <td>{$grade['DiemCuoiKy']}</td>
+                        <td>{$grade['DiemCuoiKylan1']}</td>
+                        <td>{$grade['DiemCuoiKylan2']}</td>
                         <td>{$grade['TongKetHocPhan']}</td>
                         <td>{$grade['DiemChu']}</td>
                         <td>{$evaluation}</td>

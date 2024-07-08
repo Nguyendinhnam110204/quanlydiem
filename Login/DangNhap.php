@@ -25,14 +25,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['idNguoiDung'] = $idNguoiDung;
             $_SESSION['TenDangNhap'] = $tenDangNhapDB;
             $_SESSION['VaiTro'] = $vaiTro;
-
+           
+            // Lấy mã sinh viên dựa trên tên đăng nhập nếu vai trò là sinh viên
+             if ($vaiTro == 'sinh_vien') {
+                $studentStmt = $conn->prepare("SELECT idSinhVien FROM SinhVien WHERE MaSinhVien = ?");
+                $studentStmt->bind_param("s", $tenDangNhap);
+                $studentStmt->execute();
+                $studentStmt->bind_result($idSinhVien);
+                $studentStmt->fetch();
+                $_SESSION['idSinhVien'] = $idSinhVien;
+                $studentStmt->close();
+            }
             // Phân quyền dựa trên vai trò
             if ($vaiTro == 'giao_vien') {
                 echo "<script>
                         alert('Đăng nhập thành công với vai trò giảng viên.');
                         window.location.href = '../GiangVien_Index.php'; // Đổi thành trang chính của giảng viên
                     </script>";
-            }if ($vaiTro == 'sinh_vien'){
+            }elseif ($vaiTro == 'sinh_vien'){
                 echo "<script>
                         alert('Đăng nhập thành công với vai trò sinh viên.');
                         window.location.href = '../xemdiem.php'; // Đổi thành trang chính của sinh viên

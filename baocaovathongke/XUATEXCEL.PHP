@@ -15,7 +15,7 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
     $sheet->setCellValue('A'.$rowCount,'Mã Sinh Viên');
     $sheet->setCellValue('B'.$rowCount,'Họ Và Tên');
     $sheet->setCellValue('C'.$rowCount,'Tên Lớp');
-    $sheet->setCellValue('D'.$rowCount,'Học Kỳ');
+    $sheet->setCellValue('D'.$rowCount,'Năm Học');
     $sheet->setCellValue('E'.$rowCount,'GPA');
     $sheet->setCellValue('F'.$rowCount,'Loại Học Bổng');
     // định dạng cột tiêu đề
@@ -53,6 +53,7 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
       }elseif($gpa >= 3.2 && $gpa <= 3.59){
           $loaiHocBong = 'Giỏi';
       }
+      
       elseif($gpa >= 2.5 && $gpa <= 3.19){
           $loaiHocBong = 'Khá';
       }
@@ -60,7 +61,7 @@ if(isset($_POST['btnxuatexcel']) && isset($_SESSION['idKhoa']) && isset($_SESSIO
       $sheet->setCellValue('A'.$rowCount, $row['MaSinhVien']);
       $sheet->setCellValue('B'.$rowCount, $row['HoTen']);
       $sheet->setCellValue('C'.$rowCount, $row['TenLop']);
-      $sheet->setCellValue('D'.$rowCount, $row['TenHocKy']);
+      $sheet->setCellValue('D'.$rowCount, $row['NamHoc']);
       $sheet->setCellValue('E'.$rowCount, $row['GPA']);
       $sheet->setCellValue('F'.$rowCount, $loaiHocBong);
       

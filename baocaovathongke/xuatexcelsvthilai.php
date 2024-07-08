@@ -5,20 +5,20 @@ require_once '../Classes/Classes/PHPExcel/IOFactory.php';
 session_start();
 //xuat excel
 $tieudebaocao = '';
-if(isset($_POST['btnxuatexcel_thilai']) && isset($_SESSION['idKhoa']) && isset($_SESSION['idHocKy']) && isset($_POST['namHoc'])){
+if(isset($_POST['btnxuatexcel_thilai']) && isset($_SESSION['idKhoa']) && isset($_SESSION['idHocKy'])){
     // code xuất excel
     $objExcel = new PHPExcel();
     $objExcel->setActiveSheetIndex(0);
-    $sheet = $objExcel->getActiveSheet()->setTitle('DS HOC BONG');//đặt tên cho sheet
+    $sheet = $objExcel->getActiveSheet()->setTitle('DS SINH VIÊN THI LẠI');//đặt tên cho sheet
     $rowCount = 1;
   // Tạo tiêu đề cho cột trong excel
    
     $sheet->setCellValue('A'.$rowCount,'Mã Sinh Viên');
     $sheet->setCellValue('B'.$rowCount,'Họ Và Tên');
     $sheet->setCellValue('C'.$rowCount,'Tên Lớp');
-    $sheet->setCellValue('D'.$rowCount,'Học Kỳ');
+    $sheet->setCellValue('D'.$rowCount,'Năm Học');
     $sheet->setCellValue('E'.$rowCount,'Tổng Kết Học Phần');
-    $sheet->setCellValue('F'.$rowCount,'Năm Học');
+    $sheet->setCellValue('F'.$rowCount,'Đánh Giá');
     // định dạng cột tiêu đề
     $sheet->getColumnDimension('A')->setAutoSize(true);
     $sheet->getColumnDimension('B')->setAutoSize(true);
@@ -33,18 +33,15 @@ if(isset($_POST['btnxuatexcel_thilai']) && isset($_SESSION['idKhoa']) && isset($
    
     $idKhoa = $_SESSION['idKhoa'];
     $idHocKy = $_SESSION['idHocKy'];
-    $namHoc = $_POST['namHoc'];
+    //$namHoc = $_POST['NamHoc'];
     // Điền dữ liệu vào các dòng. Dữ liệu lấy từ DB
-    $sql = "SELECT lop.*, khoa.*, sinhvien.*, hocky.*, diem.*
-                       FROM lop
-                       JOIN khoa ON khoa.idKhoa = lop.idKhoa
-                       JOIN sinhvien ON lop.idLop = sinhvien.idLop
-                       JOIN diem ON diem.idSinhVien = sinhvien.idSinhVien
-                       JOIN hocky ON diem.idHocKy = hocky.idHocKy
-                       WHERE lop.idKhoa = '$idKhoa' 
-                       AND diem.idHocKy = '$idHocKy' 
-                       AND diem.TongKetHocPhan < 4.0 
-                       AND hocky.namHoc = '$namHoc'";
+    $sql = "SELECT lop.*, khoa.*, sinhvien.*, diem.*, hocky.*
+        FROM lop
+        JOIN khoa ON khoa.idKhoa = lop.idKhoa
+        JOIN sinhvien ON lop.idLop = sinhvien.idLop
+        JOIN diem ON diem.idSinhVien = sinhvien.idSinhVien
+        JOIN hocky ON diem.idHocKy = hocky.idHocKy
+        WHERE lop.idKhoa = '$idKhoa' AND diem.TongKetHocPhan < 4.0  AND diem.idHocKy = '$idHocKy'";
     $result_excel = mysqli_query($conn, $sql); 
     // Kiểm tra xem truy vấn có thành công không
     if (!$result_excel) {
@@ -56,9 +53,9 @@ if(isset($_POST['btnxuatexcel_thilai']) && isset($_SESSION['idKhoa']) && isset($
       $sheet->setCellValue('A'.$rowCount, $row['MaSinhVien']);
       $sheet->setCellValue('B'.$rowCount, $row['HoTen']);
       $sheet->setCellValue('C'.$rowCount, $row['TenLop']);
-      $sheet->setCellValue('D'.$rowCount, $row['TenHocKy']);
+      $sheet->setCellValue('D'.$rowCount, $row['NamHoc']);
       $sheet->setCellValue('E'.$rowCount, $row['TongKetHocPhan']);
-      $sheet->setCellValue('F'.$rowCount, $namHoc);
+      $sheet->setCellValue('F'.$rowCount,$row['DanhGia'] );
       
     }
     
