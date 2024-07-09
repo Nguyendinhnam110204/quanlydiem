@@ -12,12 +12,16 @@ if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['gi
     // $soTinChi = $_POST['soTinChi'];
     $lop = $_POST['lop'];
     $file = $_FILES['fileUpload']['tmp_name'];
-
+    // từ id suy ra tên lớp tương ứng.
+$sql_tenlop = "SELECT * FROM lop WHERE lop.idLop = '$lop'";
+$result = mysqli_query($conn,$sql_tenlop);
+while($row = mysqli_fetch_assoc($result)){
+    $Tenlop = $row['TenLop'];
+}
     // Kiểm tra file có tồn tại và có thể đọc được không
     if (!empty($file) && file_exists($file)) {
         $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        $objReader->setLoadSheetsOnly('73dctt24');
-
+        $objReader->setLoadSheetsOnly($Tenlop);
         try {
             $objExcel = $objReader->load($file);
             $sheetData = $objExcel->getActiveSheet()->toArray(null, true, true, true);
@@ -63,14 +67,14 @@ if(isset($_POST['btn_xuat_excel']) && isset($_POST['hocKy']) && isset($_POST['gi
                         }
                           // Kiểm tra và xử lý kết quả INSERT
                     if ($insertResult) {
-                        // Lấy id của bản ghi vừa chèn vào
+                        // Lấy idDiem của bản ghi vừa chèn vào
                         $lastInsertedId = mysqli_insert_id($conn);
 
                         // Cập nhật GPA vào bảng `gpa`
                         $sqlGPA = "INSERT INTO gpa ( idSinhVien,idHocKy, GPA ) VALUES ('$idSinhVien','$idHocKy','$gpaH4')";
                         $resultGPA = mysqli_query($conn, $sqlGPA);
-
-                        // Lấy id của GPA vừa cập nhật
+                        
+                        // Lấy idGPA của GPA vừa cập nhật
                         $idGPA = mysqli_insert_id($conn);
 
                         // Cập nhật idGPA vào bảng `diem`

@@ -42,11 +42,11 @@ $sql_danhsachdiemsv = "SELECT diem.*, lop.*, sinhvien.*, HocKy.*, monhoc.*
                        JOIN HocKy ON HocKy.idHocKy = diem.idHocKy
                        JOIN lop ON lop.idLop = sinhvien.idLop
                        JOIN monhoc ON monhoc.idMonHoc = diem.idMonHoc";
-
-if (isset($_POST['loclop']) && $_POST['loclop'] != 0 && isset($_POST['monhoc']) && isset($_POST['btntkdiem1']) && isset($_POST['hocky'])  ) {
-    $idlop = $_POST['loclop'];
-    $idMonHoc = $_POST['monhoc'];
-    $idhocky = $_POST['hocky'];
+if(isset($_GET['loclop']) && $_GET['loclop'] != 0 && isset($_GET['monhoc']) && isset($_GET['btntkdiem1']) && isset($_GET['hocky'])  ) 
+{
+    $idlop = $_GET['loclop'];
+    $idMonHoc = $_GET['monhoc'];
+    $idhocky = $_GET['hocky'];
     $_SESSION['loclop'] = $idlop;
     $_SESSION['monhoc'] = $idMonHoc;
     $_SESSION['hocky'] = $idhocky;
@@ -54,14 +54,14 @@ if (isset($_POST['loclop']) && $_POST['loclop'] != 0 && isset($_POST['monhoc']) 
 } else {
     $result_danhsach = false;
 }
-if (isset($_POST['loclop2']) && $_POST['loclop2'] != 0 && isset($_POST['monhoc2']) && isset($_POST['btntkdiem2']) && isset($_POST['hocky2'])  ) {
-    $idlop2 = $_POST['loclop2'];
-    $idMonHoc2 = $_POST['monhoc2'];
-    $idhocky2 = $_POST['hocky2'];
+if (isset($_GET['loclop2']) && $_GET['loclop2'] != 0 && isset($_GET['monhoc2']) && isset($_GET['btntkdiem2']) && isset($_GET['hocky2'])  ) {
+    $idlop2 = $_GET['loclop2'];
+    $idMonHoc2 = $_GET['monhoc2'];
+    $idhocky2 = $_GET['hocky2'];
     $_SESSION['loclop2'] = $idlop2;
     $_SESSION['monhoc2'] = $idMonHoc2;
     $_SESSION['hocky2'] = $idhocky2;
-    $sql_danhsachdiemsv .= " WHERE DiemCuoiKylan2 IS NULL  AND lop.idLop = '$idlop2' AND diem.idHocKy = '$idhocky2' AND diem.idMonHoc = '$idMonHoc2'  ";
+    $sql_danhsachdiemsv .= " WHERE  DiemCuoiKylan2 IS NULL  lop.idLop = '$idlop2' AND diem.idHocKy = '$idhocky2' AND diem.idMonHoc = '$idMonHoc2'  ";
 } else {
     $result_danhsach = false;
 }
@@ -205,7 +205,7 @@ mysqli_close($conn);
         <div  style="display: flex; justify-content: space-between;">
             <div style="display:flex; margin-top:10px;align-items:center;">
                 
-                <form action="" method="post">
+                <form action="" method="get">
                 <div style="display:flex; padding:20px 20px;">
                 <button  class="btn btn-success" type="submit" style="margin-top:2px;height:40px;" name="btntkdiem1">Cập Nhật Lần 1</button>
                 <select name="loclop" id="lopSelect" style="width:200px; text-align:center; margin:0 10px;" class="lop">
@@ -241,7 +241,7 @@ mysqli_close($conn);
         <div  style="display: flex; justify-content: space-between;">
             <div style="display:flex; margin-top:5px;align-items:center;">
                 
-                <form action="" method="post">
+                <form action="" method="get">
                 <div style="display:flex; padding:20px 20px;">
                 <button  class="btn btn-success" type="submit" style="margin-top:2px;height:40px;" name="btntkdiem2">Cập Nhật Lần 2</button>
                 <select name="loclop2" id="lopSelect2" style="width:200px; text-align:center; margin:0 10px;" class="lop">

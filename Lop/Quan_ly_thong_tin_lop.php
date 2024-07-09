@@ -2,14 +2,24 @@
 require_once '../folderconnect/connect.php';
 session_start();
 $vaiTro = $_SESSION['VaiTro'];
+// Lấy dữ liệu từ bảng Khoa
+$sql_Khoa = "SELECT * FROM Khoa";
+$result_Khoa = mysqli_query($conn, $sql_Khoa);
+
 // Truy vấn dữ liệu
-$hienthi_sql = "SELECT lop.idLop, lop.MaLop, lop.TenLop, khoa.TenKhoa, giangvien.Hoten, hedaotao.TenHeDT 
+$hienthi_sql = "SELECT lop.idLop, lop.MaLop, lop.idKhoa, lop.TenLop, khoa.TenKhoa,khoa.idKhoa ,giangvien.Hoten, hedaotao.TenHeDT 
                 FROM lop
                 JOIN khoa ON lop.idKhoa = khoa.idKhoa 
                 JOIN giangvien ON lop.idGiangvien = giangvien.idGiangvien
                 JOIN hedaotao ON lop.idHeDT = hedaotao.idHeDT";
-$result = mysqli_query($conn, $hienthi_sql);
 
+if(isset($_POST['btntkdiemkhoa']) && isset($_POST['lockhoa'])){
+    $idkhoa = $_POST['lockhoa'];
+    //khi nối chuỗi thì phải thêm khoảng cách tránh bị gắn liền với câu sql trên 
+    $hienthi_sql .= " WHERE lop.idKhoa = '$idkhoa'";
+    // $result_lop_khoa = mysqli_query($conn, $sql_lop_khoa);
+}
+$result = mysqli_query($conn, $hienthi_sql);
 //Tìm kiếm
 if(isset($_POST['btntk'])){
     $mmalop=$_POST['tkmalop'];
@@ -20,6 +30,7 @@ if(isset($_POST['btntk'])){
     JOIN hedaotao ON lop.idHeDT = hedaotao.idHeDT
      WHERE malop like '%$mmalop%'";
     $result = mysqli_query($conn,$sqltk);
+    
   }
 ?>
 <!DOCTYPE html>
@@ -41,7 +52,35 @@ if(isset($_POST['btntk'])){
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .input-container,
+        .select-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-container input,
+        .input-container button,
+        .select-container select,
+        .select-container button {
+            margin-right: 10px;
+        }
+
+        .input-container button,
+        .select-container button {
+            width: 100px;
+        }
+    </style>
 </head>
+
 <body>
 <nav>
         <div class="logo-name">
@@ -88,19 +127,20 @@ if(isset($_POST['btntk'])){
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <?php endif; ?>
-
-
-                <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' || $vaiTro == 'admin'): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
                 <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien'): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Bảng điểm</span>
+                </a></li>
+                
                 <?php endif; ?>
             </ul>
             
@@ -133,14 +173,29 @@ if(isset($_POST['btntk'])){
 
         <div class="dash-content">
     <div class="container">
-        <h2 class="text-center my-4">Quản lý thông tin lớp</h2><div class="input-group mb-3" style="margin-top: 50px; width: 400px;">
-                <form action="" method="POST" style="display: flex; width: 100%;">
-                    <input type="search" class="form-control" placeholder="Mã lớp" name="tkmalop">&nbsp
-                    <div class="input-group-append">
-                        <button class="btn btn-success" name="btntk" type="submit" style="width: 100px;">Tìm Kiếm</button>
-                    </div>
-                </form>
-            </div><br>
+    <h2 class="text-center my-4">Quản lý thông tin lớp</h2>
+                <div class="form-container mb-3" style="margin-top: 50px;">
+                    <form action="" method="POST" class="form-container">
+                        <div class="input-container">
+                            <input type="search" class="form-control" placeholder="Mã lớp" name="tkmalop">
+                            <button class="btn btn-success" name="btntk" type="submit" style="width:150px;">Tìm Kiếm</button>
+                        </div>
+                        <div class="select-container">
+                            <select name="lockhoa" id="khoaSelect" class="khoa" style="height:36px;width:150px; text-align:center;">
+                                <option value="0">Theo khoa..</option>
+                                <?php 
+                                while($r = mysqli_fetch_assoc($result_Khoa)){
+                                ?>
+                                <option value="<?php echo $r['idKhoa']; ?>"><?php echo $r['TenKhoa']; ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <button class="btn btn-success" type="submit" name="btntkdiemkhoa">Lọc Khoa</button>
+                        </div>
+                    </form>
+                </div>
+<br>
 
         <table class="table" style="margin: -15px 0 0 -10px; width:100%">
             <thead class="thead-dark">

@@ -145,9 +145,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Thực hiện cập nhật
     if (mysqli_query($conn, $sql_update_sinhvien) && mysqli_query($conn, $sql_update_lop) && mysqli_query($conn, $sql_update_diem)) {
         echo "<script>
-        alert('Cập nhật điểm thành công.');
-        window.location.href = 'bang_diem_sv.php'; // Đường dẫn đến trang trước đó hoặc trang chính
-      </script>";
+    alert('Cập nhật điểm thành công.');
+    window.history.back(); // Quay lại trang trước đó
+</script>";
         
     } else {
         echo "Lỗi cập nhật: " . mysqli_error($conn);
