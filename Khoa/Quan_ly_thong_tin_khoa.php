@@ -1,18 +1,5 @@
 <?php
- 
-session_start();
-$vaiTro = $_SESSION['VaiTro'];
-if (!isset($_SESSION['VaiTro'])) {
-    // Chưa đăng nhập
-    echo "<script>
-            alert('Bạn chưa đăng nhập.');
-            window.location.href = '../Login/DangNhap_Index.php';
-        </script>";
-    exit;
-}
-
 require_once '../folderconnect/connect.php';
-
     // Số môn học trên mỗi trang
     $limit = 6;
 
@@ -24,7 +11,8 @@ require_once '../folderconnect/connect.php';
 
     $count_sql = "SELECT COUNT(*) AS total FROM khoa";
     $hienthi_sql= "SELECT * FROM khoa order by MaKhoa,TenKhoa
-                   LIMIT $limit OFFSET $offset";
+                    LIMIT $limit OFFSET $offset";
+
 
     // Thực hiện truy vấn lấy tổng số môn học
     $result_count = mysqli_query($conn, $count_sql);
@@ -82,11 +70,13 @@ require_once '../folderconnect/connect.php';
 
         <div class="menu-items">
         <ul class="nav-links">
-            <!-- Dành cho admin -->
-            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
+                </a></li>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Bảng điểm</span>
                 </a></li>
                 <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
@@ -120,21 +110,6 @@ require_once '../folderconnect/connect.php';
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
-                <?php endif; ?>
-
-
-                <!-- Dành cho giáo viên và admin -->
-            <?php if ($vaiTro == 'giao_vien' ): ?>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Thêm điểm</span>
-                </a></li>
-                <li><a href="../bang_diem/bang_diem_sv.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Cập Nhật điểm</span>
-                </a></li>
-                
-                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">
@@ -143,7 +118,16 @@ require_once '../folderconnect/connect.php';
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-    
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                    <span class="link-name">Chế độ</span>
+                </a>
+
+                <div class="mode-toggle">
+                  <span class="switch"></span>
+                </div>
+            </li>
             </ul>
         </div>
     </nav>
@@ -152,7 +136,7 @@ require_once '../folderconnect/connect.php';
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
             
-            <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
+            <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
 
 
             
@@ -171,14 +155,15 @@ require_once '../folderconnect/connect.php';
 
         <table class="table" style="margin: -15px 0 0 -10px; width:100%">
             <thead class="thead-dark">
-                <tr>
+                <tr style="text-align: center;">
                     <th scope="col">Mã Khoa</th>
                     <th scope="col">Tên Khoa</th>
                     <th scope="col">Số lượng lớp</th>
+                    <th scope="col">Các môn học trong khoa</th>
                     <th scope="col">Thao tác</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="text-align: center;">
             <?php while($r = mysqli_fetch_assoc($result)){ ?>
                 <tr>
                     <td><?php echo $r['MaKhoa']; ?></td>
@@ -193,7 +178,7 @@ require_once '../folderconnect/connect.php';
                     <?php 
                     }
                     ?>
-
+                    <td><a href="../Khoa/Quan_ly_mon_hoc_trong_khoa.php?idKhoa=<?php echo $r['idKhoa'];?>">Hiển thị chi tiết</a></td>
                     <td>
                     <button
                                         type="button" 
@@ -204,20 +189,19 @@ require_once '../folderconnect/connect.php';
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
-                                        Cập nhật
+                                        Update
                                     </button>
-                                    <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_khoa.php?idKhoa=<?php echo $r['idKhoa'];?>" class="btn btn-danger">Xóa bỏ</a>
+                                    <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_khoa.php?idKhoa=<?php echo $r['idKhoa'];?>" class="btn btn-danger">Xóa</a>
                     </td>
                 </tr>
             <?php }
             
             mysqli_close($conn); ?>
             <tr>
-            <td colspan="4"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Thêm</button></td>
+            <td colspan="5"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Thêm</button></td>
             </tr>
             </tbody>
         </table>
-
 
         <ul class="pagination justify-content-center" style="margin-left: -40px;">
                 <!-- Nút Previous -->
