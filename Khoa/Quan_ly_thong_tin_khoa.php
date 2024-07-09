@@ -1,5 +1,15 @@
 <?php
 require_once '../folderconnect/connect.php';
+session_start();
+$vaiTro = $_SESSION['VaiTro'];
+if (!isset($_SESSION['VaiTro'])) {
+    // Chưa đăng nhập
+    echo "<script>
+            alert('Bạn chưa đăng nhập.');
+            window.location.href = '../Login/DangNhap_Index.php';
+        </script>";
+    exit;
+}
     // Số môn học trên mỗi trang
     $limit = 6;
 
@@ -70,13 +80,11 @@ require_once '../folderconnect/connect.php';
 
         <div class="menu-items">
         <ul class="nav-links">
+            <!-- Dành cho admin -->
+            <?php if ($vaiTro == 'admin'): ?>
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
-                </a></li>
-                <li><a href="../themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
                 </a></li>
                 <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
@@ -94,7 +102,7 @@ require_once '../folderconnect/connect.php';
                     <i class="uil uil-book-open"></i>
                     <span class="link-name">Lớp</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Khoa/Quan_ly_thong_tin_khoa.php">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
                 </a></li>
@@ -110,6 +118,21 @@ require_once '../folderconnect/connect.php';
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
+                <?php endif; ?>
+
+
+                <!-- Dành cho giáo viên và admin -->
+            <?php if ($vaiTro == 'giao_vien' ): ?>
+                <li><a href="../themdiemsv_GV/themdiem_SV.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="../bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật điểm</span>
+                </a></li>
+              
+                <?php endif; ?>
             </ul>
             
             <ul class="logout-mode">
@@ -118,16 +141,7 @@ require_once '../folderconnect/connect.php';
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+    
             </ul>
         </div>
     </nav>
