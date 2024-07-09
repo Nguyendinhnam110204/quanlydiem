@@ -274,6 +274,7 @@ mysqli_close($conn);
           <th> Họ Và Tên</th>
           <th> Tên Lớp</th>
           <th>Năm Học</th>
+          <th>Môn Học</th>
           <th>Điểm Chuyên Cần</th>
           <th>Điểm Giữa Kỳ</th>
           <th>Điểm Cuối Kỳ Lần 1</th>
@@ -293,6 +294,7 @@ mysqli_close($conn);
                   <td><?php echo $row['HoTen']; ?></td>
                   <td><?php echo $row['TenLop']; ?></td>
                   <td><?php echo $row['NamHoc']; ?></td>
+                  <td><?php echo $row['TenMonHoc']; ?></td>
                   <td><?php echo $row['DiemChuyenCan']; ?></td>
                   <td><?php echo $row['DiemGiuaKy']; ?></td>
                   <td><?php echo $row['DiemCuoiKylan1']; ?></td>
@@ -308,6 +310,7 @@ mysqli_close($conn);
           data-MaSinhVien="<?php echo $row['MaSinhVien']; ?>" 
           data-HoTen="<?php echo $row['HoTen']; ?>" 
           data-TenLop="<?php echo $row['TenLop']; ?>" 
+          data-TenMonHoc="<?php echo $row['TenMonHoc']; ?>" 
           data-DiemChuyenCan="<?php echo $row['DiemChuyenCan']; ?>" 
           data-DiemGiuaKy="<?php echo $row['DiemGiuaKy']; ?>" 
           data-DiemCuoiKylan1="<?php echo $row['DiemCuoiKylan1']; ?>"
@@ -361,6 +364,10 @@ mysqli_close($conn);
                             <input type="text" class="form-control" id="update_TenLop" name="TenLop" readonly>
                         </div>
                         <div class="form-group">
+                            <label for="update_TenLop">Tên Môn Học</label>
+                            <input type="text" class="form-control" id="update_MonHoc" name="MonHoc" readonly>
+                        </div>
+                        <div class="form-group">
                             <label for="update_DiemChuyenCan">Diểm Chuyên Cần</label>
                             <input type="text" class="form-control" id="update_DiemChuyenCan" name="DiemChuyenCan" required>
                         </div>
@@ -396,6 +403,7 @@ mysqli_close($conn);
                         const MaSinhVien = this.getAttribute('data-MaSinhVien');
                         const HoTen= this.getAttribute('data-HoTen');
                         const TenLop = this.getAttribute('data-TenLop');
+                        const MonHoc = this.getAttribute('data-TenMonHoc');
                         const DiemChuyenCan = this.getAttribute('data-DiemChuyenCan');
                         const DiemGiuaKy = this.getAttribute('data-DiemGiuaKy');
                         const DiemCuoiKylan1= this.getAttribute('data-DiemCuoiKylan1');
@@ -405,6 +413,7 @@ mysqli_close($conn);
                         document.getElementById('update_MaSinhVien').value = MaSinhVien;
                         document.getElementById('update_HoTen').value = HoTen;
                         document.getElementById('update_TenLop').value = TenLop;
+                        document.getElementById('update_MonHoc').value = MonHoc;
                         document.getElementById('update_DiemChuyenCan').value = DiemChuyenCan;
                         document.getElementById('update_DiemGiuaKy').value = DiemGiuaKy;
                         document.getElementById('update_DiemCuoiKylan1').value = DiemCuoiKylan1;

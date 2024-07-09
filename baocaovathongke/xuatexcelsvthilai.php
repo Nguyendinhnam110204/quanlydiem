@@ -4,7 +4,6 @@ require_once '../Classes/Classes/PHPExcel.php';
 require_once '../Classes/Classes/PHPExcel/IOFactory.php';
 session_start();
 //xuat excel
-$tieudebaocao = '';
 if(isset($_POST['btnxuatexcel_thilai']) && isset($_SESSION['idKhoa']) && isset($_SESSION['idHocKy'])){
   $idKhoa = $_SESSION['idKhoa'];
   $idhocky = $_SESSION['idHocKy'];
@@ -17,13 +16,13 @@ while($row_khoa = mysqli_fetch_assoc($result_Khoa)){
     // từ id suy ra tên học kỳ tương ứng.
     $sql_hocky = "SELECT * FROM hocky WHERE hocky.idHocKy = '$idhocky'";
     $result_hocky = mysqli_query($conn,$sql_hocky);
-    while($row_hocky = mysqli_fetch_assoc($result)){
+    while($row_hocky = mysqli_fetch_assoc($result_hocky)){
         $NamHoc = $row_hocky['NamHoc'];
     }
     // code xuất excel
     $objExcel = new PHPExcel();
     $objExcel->setActiveSheetIndex(0);
-    $sheet = $objExcel->getActiveSheet()->setTitle('DS SINH VIÊN THI LẠI');//đặt tên cho sheet
+    $sheet = $objExcel->getActiveSheet()->setTitle('DS THI LẠI');//đặt tên cho sheet
     // Tạo tiêu đề cho cột trong excel
    $sheet->setCellValue('A1', 'TRƯỜNG ĐẠI HỌC CÔNG NGHỆ GTVT');
    $sheet->setCellValue('E1', 'CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM');
@@ -67,6 +66,8 @@ while($row_khoa = mysqli_fetch_assoc($result_Khoa)){
     // căn giữa tiêu đề
     $sheet->getStyle('A1:G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
    
+
+
     $idKhoa = $_SESSION['idKhoa'];
     $idHocKy = $_SESSION['idHocKy'];
     //$namHoc = $_POST['NamHoc'];
@@ -94,7 +95,8 @@ while($row_khoa = mysqli_fetch_assoc($result_Khoa)){
       $sheet->setCellValue('F'.$rowCount,$row['DanhGia'] );
       
     }
-    
+    // Căn giữa tất cả các ô từ hàng 2 đến hàng cuối cùng
+   $highestRow = $sheet->getHighestRow(); // Lấy số hàng cao nhất có dữ liệu
     // Kẻ bảng 
     $styleAray = array(
         'borders' => array(

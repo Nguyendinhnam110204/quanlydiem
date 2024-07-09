@@ -109,7 +109,11 @@ while($row = mysqli_fetch_assoc($result)){
     }
 }
 
+echo "<script>
+alert('Cập nhật điểm thành phần thành công thành công.');
+window.location.href = 'themdiem_SV.php'; // Quay lại trang trước đó
+</script>";
 // Đảm bảo không có output trước khi redirect
-header('Location: themdiem_SV.php');
+
 exit;
 ?>
