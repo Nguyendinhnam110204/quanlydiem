@@ -124,7 +124,7 @@ if (!isset($_SESSION['VaiTro'])) {
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
 
-            <img src="./Img/profile.jpg" alt="">
+            <img src="../Img/profile.jpg" alt="">
         </div>
 
         <div class="dash-content">

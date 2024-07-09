@@ -161,7 +161,7 @@ require_once '../folderconnect/connect.php';
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
             
-            <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
+            <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
 
 
             
