@@ -51,7 +51,7 @@ if (!isset($_SESSION['VaiTro'])) {
         <ul class="nav-links">
             <!-- Dành cho admin -->
             <?php if ($vaiTro == 'admin'): ?>
-                <li><a href="#">
+                <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>

@@ -36,12 +36,23 @@ $sql_hocky = "SELECT * FROM hocky ";
 $result_hocky = mysqli_query($conn, $sql_hocky);
 $result_hocky2 = mysqli_query($conn, $sql_hocky);
 
+// Số môn học trên mỗi trang
+$limit = 6;
+
+// Trang hiện tại, mặc định là trang 1
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Tính offset
+$offset = ($current_page - 1) * $limit;
+
+$count_sql = "SELECT COUNT(*) AS total FROM diem";
 $sql_danhsachdiemsv = "SELECT diem.*, lop.*, sinhvien.*, HocKy.*, monhoc.*
                        FROM diem
                        JOIN sinhvien ON sinhvien.idSinhVien = diem.idSinhVien
                        JOIN HocKy ON HocKy.idHocKy = diem.idHocKy
                        JOIN lop ON lop.idLop = sinhvien.idLop
-                       JOIN monhoc ON monhoc.idMonHoc = diem.idMonHoc";
+                       JOIN monhoc ON monhoc.idMonHoc = diem.idMonHoc
+                       LIMIT $limit OFFSET $offset";
 
 if (isset($_POST['loclop']) && $_POST['loclop'] != 0 && isset($_POST['monhoc']) && isset($_POST['btntkdiem1']) && isset($_POST['hocky'])  ) {
     $idlop = $_POST['loclop'];
@@ -65,6 +76,15 @@ if (isset($_POST['loclop2']) && $_POST['loclop2'] != 0 && isset($_POST['monhoc2'
 } else {
     $result_danhsach = false;
 }
+
+// Thực hiện truy vấn lấy tổng số môn học
+$result_count = mysqli_query($conn, $count_sql);
+$row_count = mysqli_fetch_assoc($result_count);
+$total_records = $row_count['total'];
+
+// Tính số trang
+$total_pages = ceil($total_records / $limit);
+
 $result_danhsach = mysqli_query($conn, $sql_danhsachdiemsv);
 
 mysqli_close($conn);
@@ -338,6 +358,25 @@ mysqli_close($conn);
  <!-- Kết thúc dữ liệu mẫu -->
   </tbody>
   </table>
+
+  <ul class="pagination justify-content-center" style="margin-left: -40px;">
+                <!-- Nút Previous -->
+                <li class="page-item <?php echo ($current_page == 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="bang_diem_sv.php?page=<?php echo ($current_page > 1) ? ($current_page - 1) : 1; ?>">Trước</a>
+                </li>
+
+                <!-- Các nút số trang -->
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="bang_diem_sv.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Nút Next -->
+                <li class="page-item <?php echo ($current_page == $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="bang_diem_sv.php?page=<?php echo ($current_page < $total_pages) ? ($current_page + 1) : $total_pages; ?>">Sau</a>
+                </li>
+        </ul>
 </div>
     </section>
     <script src="../JS/Admin_Script.js"></script>
