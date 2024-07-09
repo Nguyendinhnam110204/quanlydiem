@@ -26,13 +26,13 @@
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="./bang_diem/bang_diem_sv.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
                 <li><a href="./themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Thêm điểm</span>
+                </a></li>
+                <li><a href="./bang_diem/bang_diem_sv.php">
+                    <i class="uil uil-table"></i>
+                    <span class="link-name">Cập Nhật  điểm</span>
                 </a></li>
             </ul>
             
@@ -41,17 +41,7 @@
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+                
             </ul>
         </div>
     </nav>

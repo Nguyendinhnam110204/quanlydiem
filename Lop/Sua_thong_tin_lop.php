@@ -39,19 +39,15 @@ $result = mysqli_query($conn,$edit_sql);
             <ul class="nav-links">
                 <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
-                    <span class="link-name">Quản lý tài khoản</span>
+                    <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="#">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
-                <li><a href="#">
+                <li><a href="../sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../giangvien/Index_giangvien.php">
                     <i class="uil uil-file-info-alt"></i>
-                    <span class="link-name">Thông tin giáo viên</span>
+                    <span class="link-name">Thông tin giảng viên</span>
                 </a></li>
                 <li><a href="./MonHoc/index_MonHoc.php">
                     <i class="uil uil-subject"></i>
@@ -61,15 +57,19 @@ $result = mysqli_query($conn,$edit_sql);
                     <i class="uil uil-book-open"></i>
                     <span class="link-name">Lớp</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Khoa/Quan_ly_thong_tin_khoa.php">
                     <i class="uil uil-atom"></i>
                     <span class="link-name">Khoa ngành</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../Hedaotao/Quan_ly_he_dao_tao.php">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Hệ đào tạo</span>
+                </a></li>
+                <li><a href="../Hocky/Quan_ly_hocky.php">
                     <i class="uil uil-bell-school"></i>
                     <span class="link-name">Học kỳ</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="../baocaovathongke/baocao.php">
                     <i class="uil uil-analytics"></i>
                     <span class="link-name">Báo cáo và thống kê</span>
                 </a></li>
@@ -81,16 +81,7 @@ $result = mysqli_query($conn,$edit_sql);
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+               
             </ul>
         </div>
     </nav>

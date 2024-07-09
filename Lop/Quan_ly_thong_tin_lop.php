@@ -133,14 +133,12 @@ if(isset($_POST['btntk'])){
                 </a></li>
                 <?php endif; ?>
 
-
                 <!-- Dành cho giáo viên và admin -->
             <?php if ($vaiTro == 'giao_vien'): ?>
                 <li><a href="../themdiemsv_GV/themdiem_SV.php">
                     <i class="uil uil-table"></i>
                     <span class="link-name">Bảng điểm</span>
                 </a></li>
-                
                 <?php endif; ?>
             </ul>
             
@@ -149,17 +147,6 @@ if(isset($_POST['btntk'])){
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
             </ul>
         </div>
     </nav>
@@ -168,7 +155,7 @@ if(isset($_POST['btntk'])){
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
 
-            <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
+            <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
         </div>
 
         <div class="dash-content">

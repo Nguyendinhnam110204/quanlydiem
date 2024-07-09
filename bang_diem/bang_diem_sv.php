@@ -41,12 +41,14 @@ $sql_danhsachdiemsv = "SELECT diem.*, lop.*, sinhvien.*, HocKy.*, monhoc.*
                        JOIN sinhvien ON sinhvien.idSinhVien = diem.idSinhVien
                        JOIN HocKy ON HocKy.idHocKy = diem.idHocKy
                        JOIN lop ON lop.idLop = sinhvien.idLop
+
                        JOIN monhoc ON monhoc.idMonHoc = diem.idMonHoc";
 if(isset($_GET['loclop']) && $_GET['loclop'] != 0 && isset($_GET['monhoc']) && isset($_GET['btntkdiem1']) && isset($_GET['hocky'])  ) 
 {
     $idlop = $_GET['loclop'];
     $idMonHoc = $_GET['monhoc'];
     $idhocky = $_GET['hocky'];
+
     $_SESSION['loclop'] = $idlop;
     $_SESSION['monhoc'] = $idMonHoc;
     $_SESSION['hocky'] = $idhocky;
@@ -65,6 +67,7 @@ if (isset($_GET['loclop2']) && $_GET['loclop2'] != 0 && isset($_GET['monhoc2']) 
 } else {
     $result_danhsach = false;
 }
+
 $result_danhsach = mysqli_query($conn, $sql_danhsachdiemsv);
 
 mysqli_close($conn);
@@ -181,17 +184,6 @@ mysqli_close($conn);
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
             </ul>
         </div>
     </nav>
@@ -338,6 +330,7 @@ mysqli_close($conn);
  <!-- Kết thúc dữ liệu mẫu -->
   </tbody>
   </table>
+
 </div>
     </section>
     <script src="../JS/Admin_Script.js"></script>

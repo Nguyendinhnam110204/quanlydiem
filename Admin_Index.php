@@ -30,10 +30,6 @@
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
-                <li><a href="./themdiemsv_GV/themdiem_SV.php">
-                    <i class="uil uil-table"></i>
-                    <span class="link-name">Bảng điểm</span>
-                </a></li>
                 <li><a href="./sinhvien/Index_sinhvien.php">
                     <i class="uil uil-book-reader"></i>
                     <span class="link-name">Thông tin sinh viên</span>
@@ -74,16 +70,7 @@
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+                
             </ul>
         </div>
     </nav>

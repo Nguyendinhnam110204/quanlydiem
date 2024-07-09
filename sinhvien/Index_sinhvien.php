@@ -106,16 +106,6 @@ if (!isset($_SESSION['VaiTro'])) {
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
             </ul>
         </div>
     </nav>
@@ -124,7 +114,7 @@ if (!isset($_SESSION['VaiTro'])) {
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
 
-            <img src="./Img/profile.jpg" alt="">
+            <img src="../Img/profile.jpg" alt="">
         </div>
 
         <div class="dash-content">
@@ -133,7 +123,32 @@ if (!isset($_SESSION['VaiTro'])) {
             // Kết nối
             require_once '../folderconnect/connect.php';
             // Câu lệnh
-            $lietke_sql = "SELECT sv.*, l.MaLop FROM sinhvien sv JOIN lop l ON sv.idLop = l.idLop ORDER BY sv.idSinhVien";
+            
+            // Số môn học trên mỗi trang
+            $limit = 6;
+
+            // Trang hiện tại, mặc định là trang 1
+            $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+            // Tính offset
+            $offset = ($current_page - 1) * $limit;
+
+            $count_sql = "SELECT COUNT(*) AS total FROM sinhvien";
+
+            $lietke_sql = "SELECT sv.*, l.MaLop 
+                           FROM sinhvien sv
+                           JOIN lop l ON sv.idLop = l.idLop 
+                           ORDER BY sv.idSinhVien
+                           LIMIT $limit OFFSET $offset";
+
+            // Thực hiện truy vấn lấy tổng số môn học
+            $result_count = mysqli_query($conn, $count_sql);
+            $row_count = mysqli_fetch_assoc($result_count);
+            $total_records = $row_count['total'];
+
+            // Tính số trang
+            $total_pages = ceil($total_records / $limit);
+
             // Thực thi câu lệnh
             $result = mysqli_query($conn, $lietke_sql);
             // Duyệt qua result và in ra
@@ -191,6 +206,25 @@ if (!isset($_SESSION['VaiTro'])) {
                         ?>
                     </tbody>
                 </table>
+
+                <ul class="pagination justify-content-center" style="margin-left: -40px;">
+                <!-- Nút Previous -->
+                <li class="page-item <?php echo ($current_page == 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="Index_sinhvien.php?page=<?php echo ($current_page > 1) ? ($current_page - 1) : 1; ?>">Trước</a>
+                </li>
+
+                <!-- Các nút số trang -->
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="Index_sinhvien.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Nút Next -->
+                <li class="page-item <?php echo ($current_page == $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="Index_sinhvien.php?page=<?php echo ($current_page < $total_pages) ? ($current_page + 1) : $total_pages; ?>">Sau</a>
+                </li>
+        </ul>
             </div>
         </div>
     </section>

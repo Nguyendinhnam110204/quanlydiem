@@ -51,7 +51,7 @@ if (!isset($_SESSION['VaiTro'])) {
         <ul class="nav-links">
             <!-- Dành cho admin -->
             <?php if ($vaiTro == 'admin'): ?>
-                <li><a href="#">
+                <li><a href="../NguoiDung/index_NguoiDung.php">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Tài khoản</span>
                 </a></li>
@@ -110,16 +110,7 @@ if (!isset($_SESSION['VaiTro'])) {
                     <span class="link-name">Đăng xuất</span>
                 </a></li>
 
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Chế độ</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+    
             </ul>
         </div>
     </nav>
