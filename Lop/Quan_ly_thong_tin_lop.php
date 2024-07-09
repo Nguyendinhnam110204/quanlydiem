@@ -6,12 +6,23 @@ $vaiTro = $_SESSION['VaiTro'];
 $sql_Khoa = "SELECT * FROM Khoa";
 $result_Khoa = mysqli_query($conn, $sql_Khoa);
 
+// Số môn học trên mỗi trang
+$limit = 6;
+
+// Trang hiện tại, mặc định là trang 1
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Tính offset
+$offset = ($current_page - 1) * $limit;
+
+$count_sql = "SELECT COUNT(*) AS total FROM lop";
 // Truy vấn dữ liệu
 $hienthi_sql = "SELECT lop.idLop, lop.MaLop, lop.idKhoa, lop.TenLop, khoa.TenKhoa,khoa.idKhoa ,giangvien.Hoten, hedaotao.TenHeDT 
                 FROM lop
                 JOIN khoa ON lop.idKhoa = khoa.idKhoa 
                 JOIN giangvien ON lop.idGiangvien = giangvien.idGiangvien
-                JOIN hedaotao ON lop.idHeDT = hedaotao.idHeDT";
+                JOIN hedaotao ON lop.idHeDT = hedaotao.idHeDT
+                LIMIT $limit OFFSET $offset";
 
 if(isset($_POST['btntkdiemkhoa']) && isset($_POST['lockhoa'])){
     $idkhoa = $_POST['lockhoa'];
@@ -19,7 +30,17 @@ if(isset($_POST['btntkdiemkhoa']) && isset($_POST['lockhoa'])){
     $hienthi_sql .= " WHERE lop.idKhoa = '$idkhoa'";
     // $result_lop_khoa = mysqli_query($conn, $sql_lop_khoa);
 }
+
+$result_count = mysqli_query($conn, $count_sql);
+$row_count = mysqli_fetch_assoc($result_count);
+$total_records = $row_count['total'];
+
+// Tính số trang
+$total_pages = ceil($total_records / $limit);
+
 $result = mysqli_query($conn, $hienthi_sql);
+
+
 //Tìm kiếm
 if(isset($_POST['btntk'])){
     $mmalop=$_POST['tkmalop'];
@@ -228,6 +249,25 @@ if(isset($_POST['btntk'])){
             </tr>
             </tbody>
         </table>
+
+        <ul class="pagination justify-content-center" style="margin-left: -40px;">
+                <!-- Nút Previous -->
+                <li class="page-item <?php echo ($current_page == 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="Quan_ly_thong_tin_lop.php?page=<?php echo ($current_page > 1) ? ($current_page - 1) : 1; ?>">Trước</a>
+                </li>
+
+                <!-- Các nút số trang -->
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="Quan_ly_thong_tin_lop.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Nút Next -->
+                <li class="page-item <?php echo ($current_page == $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="Quan_ly_thong_tin_lop.php?page=<?php echo ($current_page < $total_pages) ? ($current_page + 1) : $total_pages; ?>">Sau</a>
+                </li>
+        </ul>
     </div>
     </div>
     </section>
