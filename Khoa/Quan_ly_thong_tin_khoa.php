@@ -150,7 +150,7 @@ if (!isset($_SESSION['VaiTro'])) {
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
             
-            <img src="./Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
+            <img src="../Img/profile.jpg" alt="Avatar" style="margin-right: 50px;">
 
 
             
@@ -203,7 +203,7 @@ if (!isset($_SESSION['VaiTro'])) {
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
-                                        Update
+                                        Sửa
                                     </button>
                                     <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_khoa.php?idKhoa=<?php echo $r['idKhoa'];?>" class="btn btn-danger">Xóa</a>
                     </td>

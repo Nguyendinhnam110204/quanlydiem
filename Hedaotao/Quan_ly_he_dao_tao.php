@@ -192,9 +192,9 @@ require_once '../folderconnect/connect.php';
                                         data-toggle="modal" 
                                         data-target="#myModal-update"
                                         style="margin-right: 10px">
-                                        Cập nhật
+                                        Sửa
                                     </button>
-                                    <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_he_dt.php?idHeDT=<?php echo $r['idHeDT'];?>" class="btn btn-danger">Xóa bỏ</a>
+                                    <a onclick="return confirm('Bạn có muốn xóa không?');" href="Xoa_he_dt.php?idHeDT=<?php echo $r['idHeDT'];?>" class="btn btn-danger">Xóa</a>
                     </td>
                 </tr>
             <?php } ?>

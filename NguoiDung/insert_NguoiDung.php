@@ -9,6 +9,12 @@
         $matKhau = $_POST['MatKhau'];
         $vaiTro = $_POST['VaiTro'];
 
+        // Kiểm tra mật khẩu có đáp ứng yêu cầu
+        if (strlen($matKhau) < 8 || strlen($matKhau) > 24 || !preg_match('/[A-Z]/', $matKhau)) {
+            echo '<script>alert("Mật khẩu phải có độ dài từ 8 đến 24 ký tự và chứa ít nhất một chữ cái viết hoa!"); window.history.back();</script>';
+            exit; // Dừng lại nếu mật khẩu không hợp lệ
+        }
+
         $check_sql = "SELECT * FROM NguoiDung WHERE TenDangNhap = '$tenDangNhap'";
         $check_result = mysqli_query($conn, $check_sql);
 
