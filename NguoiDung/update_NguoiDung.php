@@ -1,6 +1,13 @@
 <?php
 require_once '../folderconnect/connect.php';
 
+// Hàm kiểm tra xem đã có tài khoản admin nào trong cơ sở dữ liệu chưa
+function isAdminExist($conn) {
+    $check_sql = "SELECT * FROM NguoiDung WHERE VaiTro = 'admin'";
+    $check_result = mysqli_query($conn, $check_sql);
+    return mysqli_num_rows($check_result) > 0;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Lấy dữ liệu từ form
     $idNguoiDung = $_POST['idNguoiDung'];
@@ -12,6 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (strlen($matKhau) < 8 || strlen($matKhau) > 24 || !preg_match('/[A-Z]/', $matKhau)) {
         echo '<script>alert("Mật khẩu phải có độ dài từ 8 đến 24 ký tự và chứa ít nhất một chữ cái viết hoa!"); window.history.back();</script>';
         exit; // Dừng lại nếu mật khẩu không hợp lệ
+    }
+
+    // Kiểm tra xem đã tồn tại tài khoản admin chưa
+    if ($vaiTro === 'admin' && isAdminExist($conn)) {
+        echo '<script>alert("Chỉ được phép tồn tại một tài khoản admin!"); window.history.back();</script>';
+        exit; // Dừng lại nếu đã tồn tại tài khoản admin
     }
 
     // Kiểm tra xem tên đăng nhập đã tồn tại chưa, ngoại trừ người dùng hiện tại
